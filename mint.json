@@ -20,12 +20,7 @@
     "name": "My Github",
     "url": "https://github.com/michaelrosstarr"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
+  "tabs": [],
   "anchors": [
     {
       "name": "Community",
@@ -55,19 +50,12 @@
       "group": "Tax Game",
       "pages": [
         "university/getting-started",
+        "university/configuration",
         "university/guide",
         "university/contracts",
         "university/interfaces",
-        "university/database"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete",
-        "api-reference/game/get"
+        "university/database",
+        "university/websockets"
       ]
     }
   ],

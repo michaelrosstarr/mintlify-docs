@@ -1,0 +1,37 @@
+---
+title: 'Configuration'
+description: 'All configuration and setup required to run stuff.'
+icon: 'sliders'
+---
+
+# Environmental Variables
+
+<CodeGroup>
+
+```env server/.env
+AWS_ACCESS_KEY=XXXXXXXXXX
+AWS_SECRET_ACCESS=XXXXXXXXXX
+AWS_REGION=eu-central-1
+```
+
+```env client/.env
+
+```
+
+</CodeGroup>
+
+# Making new files
+
+## Web Socket
+
+Make sure you always have the following at the top of a new web socket route. It makes sure that you are using the correct AWS credentials
+
+```ts server/websocket/*.ts
+import * as AWS from "aws-sdk";
+
+AWS.config.update({
+    region: 'eu-central-1',
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS
+});
+```

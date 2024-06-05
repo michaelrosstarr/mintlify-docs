@@ -4,6 +4,9 @@ description: 'This page contains all of our contacts for the RESTful API and Web
 icon: 'file-lines'
 ---
 
+<Note>The contact as displayed as code is the final say. If there is a discrepency on the image, go with what is written in these docs.</Note>
+<Warning>Make sure you have read the above!</Warning>
+
 # Flow of data
 
 <Frame type="glass" caption="Flow of Data in the project">
@@ -167,7 +170,7 @@ This request will be initated by the game host and broadcast to all players of t
 
 **Web Socket to Client**
 
-Request initated by the game host, indicating that the round has ended.
+Request initated by the game host, indicating that the round has ended. For this, there is X amount of time (represented in seconds), where the player - whatever their role - will do their actions relating to their role. Such as deciding the tax rate, reimbursing roles and handling audits. The player (role B and C) will also have a chance to be audited. That all gets dealt with during this time period.
 
 ```js
 {
@@ -176,7 +179,9 @@ Request initated by the game host, indicating that the round has ended.
         type: "endRound",
         gameID: GameID,
         playerID: PlayerID,
-        round: CurrentRoundNumber
+        round: CurrentRoundNumber,
+        startTime: timestamp,
+        duration: seconds
     }
 }
 ```
@@ -202,7 +207,7 @@ When a player sends their data in, it is simply just written to an ElastiCache i
 
 # Finish Game
 
-When the game is finished, players should be displayed information and statistics.
+When the game is finished, players should be displayed information and statistics. More information to come.
 
 **Request**
 
@@ -210,9 +215,21 @@ When the game is finished, players should be displayed information and statistic
 
 **Web Socket**
 
+Should broadcast to all connected clients that the game has been finished.
+
+```js from client to server
+{
+    action: "game",
+    data: {
+        type: "finished",
+        gameID: GameID,
+    }
+}
+```
+
 # Process Round
 
-Restful API route to process the previous round. Will fetch all player data from the ElasticCache, process it and then batch update the DynamoDB for the current 
+Restful API route to process the previous round. Will fetch all player data from the ElasticCache, process it and then batch update the DynamoDB for the current.
 
 **Request** `PATCH /process`
 

@@ -1,0 +1,39 @@
+---
+title: 'Web Socket Specifics'
+description: 'This page contains all of the specific requirements for the web socket server'
+icon: 'circle-nodes'
+---
+
+[Working with WebSocket APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api.html)
+
+The websocket has 3 built in routes. Each of them needs some functionality as listed below.
+
+1. `$connect`
+2. `$disconnect`
+3. `$default`
+
+## $connect
+
+There are two states that connect can be in. First time connect and reconnecting. Other info is that each time a user connects to the web socket server, even if they are returning, they are issued with a new connection ID. This connection ID can be read from `event.requestContext.connectionId`.
+
+### First Time Connecting
+
+If this is the first time that a player is connecting to the web socket server. You will need to save their connection ID in the connections table, see [here](/university/database#connection-table).
+
+### Reconnecting
+
+If for whatever reason, a user is disconnected, they should be given an oppotunity to reconnect. We may need to create an additional route that is called if a game and player ID is stored on the frontend to see if it is valid. If it is valid, update the connections table with the updated connection ID. Maybe something like the currently implemented `check` function, where we pass through the player and game ID and see if it exsits in the current connections table.
+
+We also need to keep some stuff persistent, especially like what current stage of the game we are on and if we are in the game loop, what current round we are on.
+
+## $disconnect
+
+This is triggered when a player disconnects from the web socket server. As it stands now, it just returns some random data, but we might want to handle it differently?
+
+## $default
+
+Honestly, I have no idea what this route does. I think it is a fallback route. So that if something does not match any other route, it default to this one.
+
+## Logging
+
+Something that would be a nice to have would be logging connects and disconnects. It can be just in a DynamoDB table. If we need to extend the DynamoDB configuration, we can do that. This would be a nice QOL thing to have.
