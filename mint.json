@@ -57,7 +57,8 @@
         "university/getting-started",
         "university/guide",
         "university/contracts",
-        "university/interfaces"
+        "university/interfaces",
+        "university/database"
       ]
     },
     {
