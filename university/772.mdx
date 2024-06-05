@@ -34,11 +34,72 @@ app.post('/createGame', async (c) => {
 You can interact with any of the AWS services by just using `AWS` object. We are using AWS CDK, which allows for easy serverless development, the API reference documentation can be found [here](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html). 
 
 ## WebSocket
-```ts server/lib/websocket-stack.ts
-// coming soon
+
+We are using the `ws` library, which is supported by AWS API Gateway. Documentation for `ws` can be found [here](https://www.npmjs.com/package/ws).
+
+All Websocket files are found in `server/websocket` and each route has its own file. A simple route consists of the handler, and even and any other code.
+
+``` ts server/websocket/check.ts
+import { APIGatewayProxyEvent } from "aws-lambda";
+
+export const handler = async (event: APIGatewayProxyEvent) => {
+    return {
+        statusCode: 200, body: JSON.stringify({
+            message: "check",
+            connectionId: `${event.requestContext.connectionId}`
+        })
+    };
+};
 ```
 
-## DynamoDB
-```ts server/lib/dynamodb-stack.ts
-// coming soon
+If you want to send data back to the client, you simply just need to return with the following format.
+
+```json
+{
+    statusCode: status_code_goes_here,
+    Data: your_data_goes_here
+}
 ```
+
+If you want to send JSON data, you will need to create your object and then stringify it. When recieving, you wil need to parse it.
+
+Once you have created your handler, you will need to add it to the websocket stack. This file can be found in `server/lib/websocket-stack.ts`. There are two steps that you need to do.
+
+You will first need to add the handler. Add it underneath the **AWS Lambda Node.js functions handlers** haeder comment.
+
+```ts server/lib/websocket-stack.ts
+const lambdaXXXXX = new cdk.aws_lambda_nodejs.NodejsFunction(
+    this,
+    "lambdaXXXXX",
+    sharedLambdaProps("fileName.ts")
+);
+tableWebsocketConnections.grantReadWriteData(lambdaXXXXX);
+```
+
+If you are going to be reading and writing from the DynamoDB, you will need to grant it read write permissions to the database, which is specified in the props of the websocket stack.
+
+Once you have added the handler, you will then need to create the route that the websocket should listen to. Simply, what API Gateway is doing is handling the websocket server and just passing through the data to specific lambda functions. Underneath the **Amazon API Gateway Websocket API Definition** comment header, add the following.
+
+```ts server/lib/websocket-stack.ts
+webSocketApi.addRoute("routeName", {
+    integration: new WebSocketLambdaIntegration(
+        "XXXXXIntegration",
+        lambdaXXXXX // handler function name
+    )
+})
+```
+
+Routes are simply actions, API Gateway redirects based on the action that get sent through with the request to the relative Lambda function.
+
+### Websocket Request
+
+This is what a simple websocket request should look like.
+
+```json
+{
+    "action": "route_goes_here",
+    "data": "data_goes_here"
+}
+```
+
+You can pass anything as the data, but if you do plan on sending JSON, you will need to stringify it. Then in the handler, you will need to parse it in order to treat it as JSON.
