@@ -99,11 +99,9 @@ This will then linked the player ID, socket ID, player role and game ID in the c
 
 ![Start Game Diagram](/images/university/StartGame.png)
 
-This will be used by the game host to start a game.
+The game host should make this web socket request in order to get the game started, it will be broadcasted to all players.
 
 **Web Socket**
-
-The following websocket request will need to be made:
 
 ```js
 {
@@ -119,11 +117,15 @@ This will then go through the connection table, getting all of the connection ID
 
 # Start of Round
 
+![Start Round Diagram](/images/university/StartRound.png)
+
 The game will be managed by the host, so that means all actions will be initiated by the host. All starting round messages will be triggered by the host. The host as well as the web socket server should always remain in sync with the data, but the host is final source of data. That means the host will be the timer of the rounds, as well as triggering the respective messages.
 
 There will need to be a timer running on the hosts client that keeps track of how long things are. We could even look at providing toast notifications about how much time is remaining, but that is a QOL for later.
 
 The hosts client will be the initator of all the web sockets in relating to the rounds. 
+
+If the current round is greater than 1, it sound process the already existing games from the ElastiCache. It should process all of them and then do one large batch update to the DynamoDB. Have a look at [Process Round](#process-round).
 
 **Web Socket**
 
@@ -134,6 +136,7 @@ A start round message will be sent to all players in the game. It will include t
     action: "game",
     data: {
         type: "startRound",
+        gameID: GameID,
         round: CurrentRoundNumber,
         startTime: StartTime,
         duration: seconds
@@ -143,9 +146,13 @@ A start round message will be sent to all players in the game. It will include t
 
 # End of Round
 
-This request will be sent when a round ends from all clients.
+![End a Round Diagram](/images/university/EndARound.png)
+
+This request will be initated by the game host and broadcast to all players of the game that the round is over and that they should send their data to the server.
 
 **Web Socket to Client**
+
+Request initated by the game host, indicating that the round has ended.
 
 ```js
 {
@@ -172,6 +179,8 @@ The client will be notified that the round has ended and needs to send the follo
     }
 }
 ```
+
+When a player sends their data in, it is simply just written to an ElastiCache instance, where it will be processed later on by the [Process Round](#process-round) RESTful route.
 
 # Process Round
 
