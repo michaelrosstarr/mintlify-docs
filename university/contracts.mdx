@@ -34,6 +34,21 @@ Status Code: `4XX | 5XX`
 }
 ```
 
+**Web Socket**
+
+Once a game has been created, user will need to make a request to the websocket server that links the gameID, connectionID, host identifier and role.
+
+```js
+{
+    action: "game",
+    data: {
+        type: "createGame",
+        gameID: GameID,
+        role: Host | A | B | C
+    }
+}
+```
+
 # Join Game
 
 Request that the students make to join in on a game.
@@ -41,7 +56,8 @@ Request that the students make to join in on a game.
 **Request** `POST /joinGame`
 ```js
 {
-    gameID: GameID
+    gameID: GameID,
+    playerName: String
 }
 ```
 
@@ -63,12 +79,13 @@ If the request was successful, the client will need to make the following websoc
     data: {
         type: "joinGame",
         gameID: GameID,
-        playerID: PlayerID
+        playerID: PlayerID,
+        role: Host | A | B | C
     }
 }
 ```
 
-This will then linked the player ID, socket ID and game ID in the connections database.
+This will then linked the player ID, socket ID, player role and game ID in the connections database.
 
 # Start Game
 
