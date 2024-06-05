@@ -15,9 +15,7 @@ Status Code: `4XX | 5XX`
 }
 ```
 
-# Create Game
-
-`POST /createGame`
+# Create Game `POST /createGame`
 
 **Request**
 
@@ -27,9 +25,7 @@ Status Code: `4XX | 5XX`
 }
 ```
 
-**Response**
-
-Status Code: `200 OK`
+**Response** `200 OK`
 
 ```js
 {
@@ -42,18 +38,14 @@ Status Code: `200 OK`
 
 Request that the students make to join in on a game.
 
-`POST /joinGame`
-
-**Request**
+**Request** `POST /joinGame`
 ```js
 {
     gameID: GameID
 }
 ```
 
-**Response**
-
-Status Code: `200 OK`
+**Response** `200 OK`
 
 ```js
 {
@@ -149,5 +141,28 @@ The client will be notified that the round has ended and needs to send the follo
         gameID: GameID,
         playerData: PlayerData
     }
+}
+```
+
+# Process Round
+
+Restful API route to process the previous round. Will fetch all player data from the ElasticCache, process it and then batch update the DynamoDB for the current 
+
+**Request** `PATCH /process`
+
+```js
+{
+    gameID: GameID
+    round: RoundNumber
+}
+```
+
+**Response** `200 OK`
+
+```js
+{
+    gameID: GameID,
+    round: RoundNumber,
+    message: "Processed all player data."
 }
 ```
