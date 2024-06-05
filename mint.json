@@ -52,9 +52,9 @@
       ]
     },
     {
-      "group": "University",
+      "group": "Tax Game",
       "pages": [
-        "university/772",
+        "university/guide",
         "university/contracts",
         "university/interfaces"
       ]

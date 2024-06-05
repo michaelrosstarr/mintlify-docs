@@ -1,8 +1,12 @@
 ---
-title: 'Tax Contracts'
-description: 'API Route Contracts'
-icon: 'school'
+title: 'API Contracts'
+description: 'This page contains all of our contacts for the RESTful API and Web Socket service, as well as data flow diagrams.'
+icon: 'file-lines'
 ---
+
+# Flow of data
+
+![Flow of Data Diagmra](/images/university/FlowOfData.png)
 
 # Error
 
@@ -53,6 +57,8 @@ Once a game has been created, user will need to make a request to the websocket 
 
 # Join Game
 
+![Join Game Diagram](/images/university/JoinGame.png)
+
 Request that the students make to join in on a game.
 
 **Request** `POST /joinGame`
@@ -91,6 +97,8 @@ This will then linked the player ID, socket ID, player role and game ID in the c
 
 # Start Game
 
+![Start Game Diagram](/images/university/StartGame.png)
+
 This will be used by the game host to start a game.
 
 **Web Socket**
@@ -111,13 +119,15 @@ This will then go through the connection table, getting all of the connection ID
 
 # Start of Round
 
-The timing will be managed by the host.
+The game will be managed by the host, so that means all actions will be initiated by the host. All starting round messages will be triggered by the host. The host as well as the web socket server should always remain in sync with the data, but the host is final source of data. That means the host will be the timer of the rounds, as well as triggering the respective messages.
+
+There will need to be a timer running on the hosts client that keeps track of how long things are. We could even look at providing toast notifications about how much time is remaining, but that is a QOL for later.
+
+The hosts client will be the initator of all the web sockets in relating to the rounds. 
 
 **Web Socket**
 
-Message sent to all palyers in a game.
-
-The server will process all data from the previous round, if it is the first round, it skips out. Most likely, this will just be an API request to tell a Lambda function to process the data of the previous round. Contact to follow soon...
+A start round message will be sent to all players in the game. It will include the round number (the round that is starting), when the round is starting and the duration of the round (in seconds).
 
 ```js
 {
@@ -126,7 +136,7 @@ The server will process all data from the previous round, if it is the first rou
         type: "startRound",
         round: CurrentRoundNumber,
         startTime: StartTime,
-        endTime: EndTime
+        duration: seconds
     }
 }
 ```
