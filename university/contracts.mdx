@@ -109,6 +109,7 @@ The game host should make this web socket request in order to get the game start
     action: "game",
     data: {
         type: "startGame",
+        playerID: PlayerID,
         gameID: GameID
     }
 }
@@ -138,6 +139,7 @@ A start round message will be sent to all players in the game. It will include t
     data: {
         type: "startRound",
         gameID: GameID,
+        playerID: PlayerID,
         round: CurrentRoundNumber,
         startTime: StartTime,
         duration: seconds
@@ -160,6 +162,8 @@ Request initated by the game host, indicating that the round has ended.
     action: "game",
     data: {
         type: "endRound",
+        gameID: GameID,
+        playerID: PlayerID,
         round: CurrentRoundNumber
     }
 }
@@ -176,6 +180,7 @@ The client will be notified that the round has ended and needs to send the follo
         type: "roundEnd",
         round: CurrentRoundNumber,
         gameID: GameID,
+        playerID: PlayerID,
         playerData: PlayerData
     }
 }
