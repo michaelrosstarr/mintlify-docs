@@ -6,9 +6,32 @@ icon: 'school'
 
 ## API
 
-```ts server/lib/server-stack.ts
-// coming soon
+The API is using a framework called Hono, which allows for easy serverless development. Configuration of Hono is not required, and you simply just need to go and add your routes in `server/lambda/index.ts`. It is very similar to Express just with more support for serverless.
+
+```ts server/lambda/index.ts
+app.post('/createGame', async (c) => {
+
+    const gameId = generateRandomPIN();
+    const TABLE_NAME = "DynamoDBStack-Games1C5D5B9B-ZH1T302Z584H";
+
+    const putParams = {
+        TableName: TABLE_NAME,
+        Item: {
+            gameID: gameId
+        },
+    };
+
+    try {
+        await ddb.put(putParams).promise();
+    } catch (err) {
+        return c.json({ success: false, error: "Failed to connect: " + JSON.stringify(err) }, 500)
+    }
+
+    return c.json({ success: 'true', gameId: gameId })
+})
 ```
+
+You can interact with any of the AWS services by just using `AWS` object. We are using AWS CDK, which allows for easy serverless development, the API reference documentation can be found [here](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html). 
 
 ## WebSocket
 ```ts server/lib/websocket-stack.ts
