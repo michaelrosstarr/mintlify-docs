@@ -182,6 +182,16 @@ The client will be notified that the round has ended and needs to send the follo
 
 When a player sends their data in, it is simply just written to an ElastiCache instance, where it will be processed later on by the [Process Round](#process-round) RESTful route.
 
+# Finish Game
+
+When the game is finished, players should be displayed information and statistics.
+
+**Request**
+
+**Response**
+
+**Web Socket**
+
 # Process Round
 
 Restful API route to process the previous round. Will fetch all player data from the ElasticCache, process it and then batch update the DynamoDB for the current 
