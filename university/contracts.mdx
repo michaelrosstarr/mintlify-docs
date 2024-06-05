@@ -104,14 +104,48 @@ The timing will be managed by the host.
 
 **Web Socket**
 
+Message sent to all palyers in a game.
+
 ```js
 {
     action: "game",
     data: {
         type: "startRound",
-        round: RoundNumber,
+        round: CurrentRoundNumber,
         startTime: StartTime,
         endTime: EndTime
+    }
+}
+```
+
+# End of Round
+
+This request will be sent when a round ends from all clients.
+
+**Web Socket to Client**
+
+```js
+{
+    action: "game",
+    data: {
+        type: "endRound",
+        round: CurrentRoundNumber
+    }
+}
+```
+
+**Web Socket to Server**
+
+The client will be notified that the round has ended and needs to send the following data back.
+
+```js
+{
+    action: "game",
+    data: {
+        type: "roundEnd",
+        round: CurrentRoundNumber,
+        gameID: GameID,
+        playerData: PlayerData
     }
 }
 ```
