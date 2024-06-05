@@ -4,6 +4,8 @@ description: 'Tax Game explained'
 icon: 'school'
 ---
 
+# Code
+
 ## API
 
 The API is using a framework called Hono, which allows for easy serverless development. Configuration of Hono is not required, and you simply just need to go and add your routes in `server/lambda/index.ts`. It is very similar to Express just with more support for serverless.
@@ -103,3 +105,67 @@ This is what a simple websocket request should look like.
 ```
 
 You can pass anything as the data, but if you do plan on sending JSON, you will need to stringify it. Then in the handler, you will need to parse it in order to treat it as JSON.
+
+# Routes & Documentation
+
+## Restful
+
+### Host
+
+#### Create Game
+
+* Pass in any options and configuration.
+* Create a game ID.
+* Store this in DynamoDB and hold game loop data in ElasticCache (redis).
+* Once they have created a game, they cannot edit the game options after that.
+
+#### Fetch Game
+
+* Call via game ID.
+* Return all data related to a game.
+* Building export data on client.
+* Send all data as JSON, client will format it over to CSV.
+* Google Sheets, export as CSV.
+
+## WebSocket
+
+### Game Routes
+
+#### Send
+```json
+{
+    action: "game",
+    data: {
+        type: "",
+        data: {}
+    }
+}
+```
+
+#### Start of a rounded
+Recieve:
+```json
+{
+    data: {
+        timeStart: "",
+        timeEnd: ""
+    }
+}
+```
+
+#### End of a round
+Send:
+```json
+{
+    action: "gameLoop",
+    data: {
+        type: "endOfRound",
+        gameID: number, 
+        round: number
+        data: {
+            // Player Interface with updated data
+        }
+    }
+}
+```
+Store `request.data` in Elastic Cache, just writing to it. Once we move to the next round, we will pull everything from the previous round from the ElasticCache, as an array, process it and do one big update to DynamoDB of all the updated objects.

@@ -54,7 +54,8 @@
     {
       "group": "University",
       "pages": [
-        "university/772"
+        "university/772",
+        "university/contracts"
       ]
     },
     {
@@ -62,7 +63,8 @@
       "pages": [
         "api-reference/endpoint/get",
         "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/endpoint/delete",
+        "api-reference/game/get"
       ]
     }
   ],

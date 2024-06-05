@@ -1,0 +1,117 @@
+---
+title: 'Tax Contracts'
+description: 'API Route Contracts'
+icon: 'school'
+---
+
+**Error**
+
+Status Code: `4XX | 5XX`
+
+```js
+{
+    statusCode: 4XX | 5XX,
+    message: ErrorMessage
+}
+```
+
+# Create Game
+
+`POST /createGame`
+
+**Request**
+
+```js
+{
+    gameConfiguration: GameConfigurationOptions
+}
+```
+
+**Response**
+
+Status Code: `200 OK`
+
+```js
+{
+    gameID: GameID,
+    gameConfiguration: GameConfigurationOptions
+}
+```
+
+# Join Game
+
+Request that the students make to join in on a game.
+
+`POST /joinGame`
+
+**Request**
+```js
+{
+    gameID: GameID
+}
+```
+
+**Response**
+
+Status Code: `200 OK`
+
+```js
+{
+    gameID: GameID,
+    playerData: PlayerData
+}
+```
+
+**Web Socket**
+
+If the request was successful, the client will need to make the following websocket request:
+```js
+{
+    action: "game",
+    data: {
+        type: "joinGame",
+        gameID: GameID,
+        playerID: PlayerID
+    }
+}
+```
+
+This will then linked the player ID, socket ID and game ID in the connections database.
+
+# Start Game
+
+This will be used by the game host to start a game.
+
+**Web Socket**
+
+The following websocket request will need to be made:
+
+```js
+{
+    action: "game",
+    data: {
+        type: "startGame",
+        gameID: GameID
+    }
+}
+```
+
+This will then go through the connection table, getting all of the connection ID's for the provided game ID. It will then broadcast a message out to all those clients saying that the game is about to start.
+
+# Start of Round
+
+The timing will be managed by the host.
+
+**Web Socket**
+
+```js
+{
+    action: "game",
+    data: {
+        type: "startRound",
+        round: RoundNumber,
+        startTime: StartTime,
+        endTime: EndTime
+    }
+}
+```
