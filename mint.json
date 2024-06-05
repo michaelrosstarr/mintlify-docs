@@ -2,14 +2,14 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Micahel's Space",
   "logo": {
-    "dark": "https://michaelrosstarr.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fporg-baby.54037589.png&w=640&q=75",
-    "light": "https://michaelrosstarr.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fporg-baby.54037589.png&w=640&q=75"
+    "dark": "/logo/dark.png",
+    "light": "/logo/light.png"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#0466c8",
+    "light": "#0466c8",
+    "dark": "#0466c8",
     "anchors": {
       "from": "#0D9373",
       "to": "#07C983"
