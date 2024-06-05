@@ -12,7 +12,7 @@ The API is using a framework called Hono, which allows for easy serverless devel
 app.post('/createGame', async (c) => {
 
     const gameId = generateRandomPIN();
-    const TABLE_NAME = "DynamoDBStack-Games1C5D5B9B-ZH1T302Z584H";
+    const TABLE_NAME = "TABLE_NAME_GOES_HERE";
 
     const putParams = {
         TableName: TABLE_NAME,
