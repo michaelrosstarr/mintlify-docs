@@ -9,6 +9,9 @@ icon: 'file-lines'
 <Frame type="glass" caption="Flow of Data in the project">
     ![Flow of Data Diagmra](/images/university/FlowOfData.png)
 </Frame>
+
+This is how data flows through out system from a technological point of view. We have a NextJS frontend, that communicate to AWS Lambda functions via AWS API Gateway. We are utilizing various other AWS services; such as AWS DynamoDB, AWS ElastiCache and AWS Cognito. 
+
 # Error
 
 Status Code: `4XX | 5XX`
@@ -21,8 +24,9 @@ Status Code: `4XX | 5XX`
 ```
 
 # Create Game
-
-![Create Game Diagram](/images/university/CreateGame.png)
+<Frame type="glass" caption="Flow of Create Game">
+    ![Create Game Diagram](/images/university/CreateGame.png)
+</Frame>
 
 **Request** `POST /createGame`
 
@@ -58,7 +62,9 @@ Once a game has been created, user will need to make a request to the websocket 
 
 # Join Game
 
-![Join Game Diagram](/images/university/JoinGame.png)
+<Frame type="glass" caption="Flow of Join Game">
+    ![Join Game Diagram](/images/university/JoinGame.png)
+</Frame>
 
 Request that the students make to join in on a game.
 
@@ -98,7 +104,9 @@ This will then linked the player ID, socket ID, player role and game ID in the c
 
 # Start Game
 
-![Start Game Diagram](/images/university/StartGame.png)
+<Frame type="glass" caption="Flow of Start Game">
+    ![Start Game Diagram](/images/university/StartGame.png)
+</Frame>
 
 The game host should make this web socket request in order to get the game started, it will be broadcasted to all players.
 
@@ -119,7 +127,9 @@ This will then go through the connection table, getting all of the connection ID
 
 # Start of Round
 
-![Start Round Diagram](/images/university/StartRound.png)
+<Frame type="glass" caption="Flow of Start Round">
+    ![Start Round Diagram](/images/university/StartRound.png)
+</Frame>
 
 The game will be managed by the host, so that means all actions will be initiated by the host. All starting round messages will be triggered by the host. The host as well as the web socket server should always remain in sync with the data, but the host is final source of data. That means the host will be the timer of the rounds, as well as triggering the respective messages.
 
@@ -149,7 +159,9 @@ A start round message will be sent to all players in the game. It will include t
 
 # End of Round
 
-![End a Round Diagram](/images/university/EndARound.png)
+<Frame type="glass" caption="Flow of End of Round">
+    ![End a Round Diagram](/images/university/EndARound.png)
+</Frame>
 
 This request will be initated by the game host and broadcast to all players of the game that the round is over and that they should send their data to the server.
 

@@ -4,9 +4,7 @@ description: 'How to setup backend stuffs'
 icon: 'folder-tree'
 ---
 
-# Code
-
-## API
+# API
 
 The API is using a framework called Hono, which allows for easy serverless development. Configuration of Hono is not required, and you simply just need to go and add your routes in `server/lambda/index.ts`. It is very similar to Express just with more support for serverless.
 
@@ -35,7 +33,7 @@ app.post('/createGame', async (c) => {
 
 You can interact with any of the AWS services by just using `AWS` object. We are using AWS CDK, which allows for easy serverless development, the API reference documentation can be found [here](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-construct-library.html). 
 
-## WebSocket
+# WebSocket
 
 We are using the `ws` library, which is supported by AWS API Gateway. Documentation for `ws` can be found [here](https://www.npmjs.com/package/ws).
 
