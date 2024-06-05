@@ -17,11 +17,13 @@ Status Code: `4XX | 5XX`
 
 # Create Game
 
+![Create Game Diagram](/images/university/CreateGame.png)
+
 **Request** `POST /createGame`
 
 ```js
 {
-    gameConfiguration: GameConfigurationOptions
+    config: GameConfigurationOptions
 }
 ```
 
@@ -30,7 +32,7 @@ Status Code: `4XX | 5XX`
 ```js
 {
     gameID: GameID,
-    gameConfiguration: GameConfigurationOptions
+    config: GameConfigurationOptions
 }
 ```
 

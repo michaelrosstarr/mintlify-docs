@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Micahel's Space",
+  "name": "Michael's Space",
   "logo": {
     "dark": "/logo/dark.png",
     "light": "/logo/light.png"
@@ -55,7 +55,8 @@
       "group": "University",
       "pages": [
         "university/772",
-        "university/contracts"
+        "university/contracts",
+        "university/interfaces"
       ]
     },
     {
