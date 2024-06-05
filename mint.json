@@ -54,6 +54,7 @@
     {
       "group": "Tax Game",
       "pages": [
+        "university/getting-started",
         "university/guide",
         "university/contracts",
         "university/interfaces"
