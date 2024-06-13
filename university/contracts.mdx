@@ -55,11 +55,10 @@ Once a game has been created, user will need to make a request to the websocket 
 ```js
 {
     action: "game",
-    data: {
-        type: "createGame",
-        gameID: GameID,
-        role: Host | A | B | C
-    }
+    type: "createGame",
+    gameID: GameID,
+    role: Host | A | B | C
+
 }
 ```
 
