@@ -50,15 +50,15 @@ Status Code: `4XX | 5XX`
 
 **Web Socket**
 
-Once a game has been created, user will need to make a request to the websocket server that links the gameID, connectionID, host identifier and role.
+Once a game has been created, the user will need to make a request to the WebSocket server that links the gameID to the user's connection ID (provided by WebSockets, not part of the request body) and marks this user as the host.
 
 ```js
+//Make sure you match the role capitalization.
 {
     action: "game",
     type: "createGame",
     gameID: GameID,
-    role: Host | A | B | C
-
+    role: Host //any role other than 'Host' will return 401 UNAUTHORIZED
 }
 ```
 
