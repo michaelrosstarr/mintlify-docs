@@ -35,7 +35,8 @@ Status Code: `4XX | 5XX`
 
 ```js
 {
-    config: GameConfigurationOptions
+    options: GameConfigurationOptions,
+    description: string
 }
 ```
 
@@ -43,8 +44,9 @@ Status Code: `4XX | 5XX`
 
 ```js
 {
+    success: true,
     gameID: GameID,
-    config: GameConfigurationOptions
+    options: GameConfigurationOptions
 }
 ```
 
@@ -83,7 +85,8 @@ Request that the students make to join in on a game.
 ```js
 {
     gameID: GameID,
-    playerData: PlayerData
+    playerID: PlayerID,
+    data: PlayerData
 }
 ```
 
