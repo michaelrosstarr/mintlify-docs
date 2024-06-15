@@ -251,3 +251,103 @@ Restful API route to process the previous round. Will fetch all player data from
     message: "Processed all player data."
 }
 ```
+
+# Fetch player from Game
+
+Restful API route to fetch a specific player for a game.
+
+**Request** `GET /games/:gameID/:playerID`
+
+**Response**
+
+```js
+{
+  "success": true,
+  "player": {
+    "gameID": "624764",
+    "data": {
+      "wealth": [],
+      "income": [],
+      "role": "",
+      "planet": [],
+      "playerCount": [],
+      "declaredIncome": [],
+      "redistributedWealth": [],
+      "taxRate": [],
+      "audit": [],
+      "name": "Bob is your uncle!",
+      "rank": [],
+      "id": "f11c8ece-9df0-4db8-b91d-2c22d7872e39",
+      "bankrupt": []
+    },
+    "playerID": "f11c8ece-9df0-4db8-b91d-2c22d7872e39"
+  }
+}
+```
+
+**Errors**
+
+```js
+{ 
+    success: false, 
+    error: "Player does not exist." | "Player does not exist for the provided game." | "Could not fetch player from the provided game."
+}
+```
+
+# Games
+
+Fetches all games
+
+**Request** `GET /games`
+
+**Response**
+
+```js
+{
+  "success": "true",
+  "games": [
+    {
+      "description": "This is game for IMY310",
+      "gameID": "624764",
+      "options": {
+        "toggleAlianInvasion": true
+      }
+    },
+    {
+      "description": "This is game for IMY310",
+      "gameID": "692203",
+      "options": {
+        "toggleAlianInvasion": true
+      }
+    },
+    {
+      "description": "This is game for IMY310",
+      "gameID": "652866",
+      "options": {
+        "toggleAlianInvasion": true
+      }
+    }
+  ]
+}
+```
+
+# Fetch a game
+
+Fetch a specific game
+
+**Request** `GET /games/:gameID`
+
+**Response**
+
+```js
+{
+  "success": "true",
+  "game": {
+    "description": "This is game for IMY310",
+    "gameID": "624764",
+    "options": {
+      "toggleAlianInvasion": true
+    }
+  }
+}
+```
