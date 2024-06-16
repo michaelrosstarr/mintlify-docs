@@ -63,7 +63,7 @@ name: [from client] //string
 
 example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID":"001a","name":"Destiel"}`
 
-### Results
+### Elasticache
 
 #### Role A
 ```
@@ -116,4 +116,12 @@ ${gameID}---${playerID}: {
     audit: [0], // - amount they were fined in an audit in a round
     bankrupt: [], // - true if they went bankrupt in a round
 }
+```
+
+### Returns
+```javascript
+return {
+      statusCode: 200,
+      body: `host [${hostID}] alerted of player [${name}] `,
+    };
 ```
