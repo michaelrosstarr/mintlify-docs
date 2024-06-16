@@ -49,7 +49,8 @@ planets :[
 ## joinGame
 joinGame creates an object in the elasticache-tax-game cache, with the key `${gameID}---${playerID}`. It will return a generated role and planet to each connection (once the planet is established), and update the host with the new player (playerID and name).
 
-> Each time a player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma"}}`
+
+<Note>Each time a player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma"}}`</Note>
 
 ### Required data
 ```
