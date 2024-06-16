@@ -29,12 +29,12 @@ game: {
     hostID: connectionID,
     gameID: data.gameID,
     gameConfiguration: {
-    stageTime: data.stageTime,
-    auditChance: data.auditChance,
-    finePercent: data.finePercent,
-    pcm: data.pcm,
-    defaultRate: data.defaultRate,
-  }
+        stageTime: data.stageTime,
+        auditChance: data.auditChance,
+        finePercent: data.finePercent,
+        pcm: data.pcm,
+        defaultRate: data.defaultRate,
+      }
 }
 
 planets :[
@@ -71,7 +71,7 @@ game-c3b4i7ybc---001a: {
     role: "A", //
     wealth: [0],
     rank: [0],
-    planet: `${planetAndRoleObj.planet}`,
+    planet: planetAndRoleObj.planet,
     taxRate: [], // ONLY A
     redistributedWealth: [], // ONLY A | amount they redistributed to B and C players in a round
     playerCount: [], // ONLY A | number of players on the planet they are currently on (relevant for redistribution calculations & planet stats)
