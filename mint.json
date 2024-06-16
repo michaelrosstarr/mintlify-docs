@@ -55,7 +55,8 @@
         "university/contracts",
         "university/interfaces",
         "university/database",
-        "university/websockets"
+        "university/websockets",
+        "university/websockets-requests"
       ]
     }
   ],
