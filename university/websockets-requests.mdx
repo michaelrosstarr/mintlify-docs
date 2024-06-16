@@ -10,7 +10,7 @@ icon: 'terminal'
 createGame creates an object in the elasticache-tax-game cache, with the key `game`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
 
 ### Required data
-```javascript
+```
 action: "game",
 type: "createGame",
 gameID: [from POST /createGame] //string
@@ -24,7 +24,7 @@ defaultRate: [from client] //number, decimal (eg: 20% = 0.20)
 example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageTime":20,"auditChance":0.25,"finePercent":0.15,"pcm":1.7,"defaultRate":0.30}`
 
 ### Elasticache
-```javascript
+```
 game: {
     hostID: connectionID,
     gameID: data.gameID,
@@ -60,7 +60,7 @@ joinGame creates an object in the elasticache-tax-game cache, with the key `${ga
 <Note>Each time a player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma"}}`</Note>
 
 ### Required data
-```javascript
+```
 action: "game",
 type: "joinGame",
 gameID: [from client] //string
@@ -73,7 +73,7 @@ example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID
 ### Elasticache
 
 #### Role A
-```javascript
+```
 ${gameID}---${playerID}: {
     connectionId: connectionID,
     playerID: data.playerID,
@@ -90,7 +90,7 @@ ${gameID}---${playerID}: {
 ```
 
 #### Role B
-```javascript
+```
 ${gameID}---${playerID}: {
 
     connectionId: connectionID,
@@ -108,7 +108,7 @@ ${gameID}---${playerID}: {
 ```
 
 #### Role C
-```javascript
+```
 ${gameID}---${playerID}: {
 
     connectionId: connectionID,
