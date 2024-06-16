@@ -64,7 +64,7 @@ example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID
 
 #### Role A
 ```
-game-c3b4i7ybc---001a: {
+${gameID}---${playerID}: {
     connectionId: connectionID,
     playerID: data.playerID,
     name: data.name,
@@ -75,6 +75,36 @@ game-c3b4i7ybc---001a: {
     taxRate: [], // ONLY A
     redistributedWealth: [], // ONLY A | amount they redistributed to B and C players in a round
     playerCount: [], // ONLY A | number of players on the planet they are currently on (relevant for redistribution calculations & planet stats)
+    bankrupt: [], // - true if they went bankrupt in a round
+}
+```
+
+#### Role B
+```
+${gameID}---${playerID}: {
+
+    connectionId: connectionID,
+    playerID: data.playerID,
+    name: data.name,
+    role: "B", //
+    wealth: [0],
+    rank: [0],
+    planet: planetAndRoleObj.planet,
+    bankrupt: [], // - true if they went bankrupt in a round
+}
+```
+
+#### Role C
+```
+${gameID}---${playerID}: {
+
+    connectionId: connectionID,
+    playerID: data.playerID,
+    name: data.name,
+    role: "C", //
+    wealth: [0],
+    rank: [0],
+    planet: [planetAndRoleObj.planet],
     bankrupt: [], // - true if they went bankrupt in a round
 }
 ```
