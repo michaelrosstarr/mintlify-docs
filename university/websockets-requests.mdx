@@ -1,15 +1,13 @@
 ---
 title: 'Web Socket Requests'
-description: 'Specification of the data that needs to be sent to the WebSocket connection to execute a given function.'
+description: 'Specification of the data that needs to be sent to the WebSocket connection to execute a given function. For each function, you can find the data structure and an example of a working command.'
 icon: 'terminal'
 ---
 
-This is an explanation of the data that needs to be sent to the WebSocket connection to execute a given function. For each function, you can find the data structure and an example of a working command.
-
-### createGame
+## createGame
 CreateGame creates an object in the elasticache-tax-game cache, with the key `game`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
 
-#### Required data
+### Required data
 ```
 action: "game",
 type: "createGame",
@@ -23,7 +21,7 @@ defaultRate: number, decimal
 
 example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageTime":20,"auditChance":0.25,"finePercent":0.15,"pcm":1.7,"defaultRate":0.30}`
 
-#### Result
+### Result
 ```
 game: {
     hostID: connectionID,
