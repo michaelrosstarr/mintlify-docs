@@ -90,6 +90,9 @@ ${gameID}---${playerID}: {
     wealth: [0],
     rank: [0],
     planet: planetAndRoleObj.planet,
+    income: [0], // - income they recieve in a round
+    declaredIncome: [0], // - income they declared in a round
+    audit: [0], // - amount they were fined in an audit in a round
     bankrupt: [], // - true if they went bankrupt in a round
 }
 ```
@@ -105,6 +108,9 @@ ${gameID}---${playerID}: {
     wealth: [0],
     rank: [0],
     planet: [planetAndRoleObj.planet], //only an array for role C
+    income: [0], // - income they recieve in a round
+    declaredIncome: [0], // - income they declared in a round
+    audit: [0], // - amount they were fined in an audit in a round
     bankrupt: [], // - true if they went bankrupt in a round
 }
 ```
