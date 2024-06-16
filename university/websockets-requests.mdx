@@ -137,6 +137,9 @@ ${gameID}---${playerID}: {
 ## startGame
 startGame goes through all of the planets in the elasticache-tax-game cache, ensures that there are no planets with an awkward amount of players (checks the last planet), and then sends each player their planet (name and ID) and role.
 
+* If there are two or less players, startGame reassigns each of them to an existing planet with the "B" role
+    * The existing planets are determined by the player's position in the player array: `planetsObject[newestPlanet.players.indexOf(player)].players.push`
+
 ### Required data
 ```
 action: "game",
