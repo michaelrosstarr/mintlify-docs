@@ -3,20 +3,22 @@ title: 'Web Socket Requests'
 description: 'Specification of the data that needs to be sent to the WebSocket connection to execute a given function. For each function, you can find the data structure and an example of a working command.'
 icon: 'terminal'
 ---
+* Values determined by the Server Stack are referred to as `[from METHOD /endpoint]`
+* Values determined by the player are referred to as `[from client]`
 
 ## createGame
-CreateGame creates an object in the elasticache-tax-game cache, with the key `game`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
+createGame creates an object in the elasticache-tax-game cache, with the key `game`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
 
 ### Required data
 ```
 action: "game",
 type: "createGame",
-gameID: string, from RestAPI
-stageTime: in seconds (eg: 20 = 20s | so a round will be 1m 20s)
-auditChance: number, decimal
-finePercent: number, decimal
-pcm: number, decimal | planet collection multiplier
-defaultRate: number, decimal
+gameID: [from POST /createGame] //string
+stageTime: [from client] //in seconds (eg: 20 = 20s | so a round will be 1m 20s)
+auditChance: [from client] //number, decimal (eg: 20% = 0.20)
+finePercent: [from client] //number, decimal (eg: 20% = 0.20)
+pcm: [from client] //number, decimal (eg: 1.7) | planet collection multiplier
+defaultRate: [from client] //number, decimal (eg: 20% = 0.20)
 ```
 
 example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageTime":20,"auditChance":0.25,"finePercent":0.15,"pcm":1.7,"defaultRate":0.30}`
@@ -42,4 +44,37 @@ planets :[
       players: [],
   },
 ]
+```
+
+## joinGame
+joinGame creates an object in the elasticache-tax-game cache, with the key `${gameID}---${playerID}`. It will return a generated role and planet to each connection (once the planet is established), and update the host with the new player (playerID and name).
+
+### Required data
+```
+action: "game",
+type: "joinGame",
+gameID: [from client] //string
+playerID: [from POST /joinGame] //string
+name: [from client] //string
+```
+
+example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID":"001a","name":"Destiel"}`
+
+### Result
+
+#### Role A
+```
+game-c3b4i7ybc---001a: {
+    connectionId: connectionID,
+    playerID: data.playerID,
+    name: data.name,
+    role: "A", //
+    wealth: [0],
+    rank: [0],
+    planet: `${planetAndRoleObj.planet}`,
+    taxRate: [], // ONLY A
+    redistributedWealth: [], // ONLY A | amount they redistributed to B and C players in a round
+    playerCount: [], // ONLY A | number of players on the planet they are currently on (relevant for redistribution calculations & planet stats)
+    bankrupt: [], // - true if they went bankrupt in a round
+}
 ```
