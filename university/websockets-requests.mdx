@@ -133,3 +133,13 @@ ${gameID}---${playerID}: {
     statusCode: 200,
     body: `host [${hostID}] alerted of player [${name}] `
 ```
+
+## startGame
+startGame goes through all of the planets in the elasticache-tax-game cache, ensures that there are no planets with an awkward amount of players (checks the last planet), and then sends each player their planet (name and ID) and role.
+
+### Required data
+```
+action: "game",
+type: "startGame",
+gameID: [from POST /createGame] //string
+```
