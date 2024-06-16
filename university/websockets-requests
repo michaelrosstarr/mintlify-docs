@@ -1,0 +1,43 @@
+
+## WebSocket requests
+This is an explanation of the data that needs to be sent to the WebSocket connection to execute a given function. For each function, you can find the data structure and an example of a working command.
+
+### createGame
+CreateGame creates an object in the elasticache-tax-game cache, with the key `game`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
+
+#### Required data
+```
+action: "game",
+type: "createGame",
+gameID: string, from RestAPI
+stageTime: in seconds (eg: 20 = 20s | so a round will be 1m 20s)
+auditChance: number, decimal
+finePercent: number, decimal
+pcm: number, decimal | planet collection multiplier
+defaultRate: number, decimal
+```
+
+example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageTime":20,"auditChance":0.25,"finePercent":0.15,"pcm":1.7,"defaultRate":0.30}`
+
+#### Result
+```
+game: {
+    hostID: connectionID,
+    gameID: data.gameID,
+    gameConfiguration: {
+    stageTime: data.stageTime,
+    auditChance: data.auditChance,
+    finePercent: data.finePercent,
+    pcm: data.pcm,
+    defaultRate: data.defaultRate,
+  }
+}
+
+planets :[
+  {
+      planetID: "planet0",
+      name: "planet0",
+      players: [],
+  },
+]
+```
