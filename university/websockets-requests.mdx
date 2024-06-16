@@ -81,7 +81,7 @@ ${gameID}---${playerID}: {
     role: "A", //
     wealth: [0],
     rank: [0],
-    planet: planetAndRoleObj.planet,
+    planet: `${planetID},${planetName}`, // 
     taxRate: [], // ONLY A
     redistributedWealth: [], // ONLY A | amount they redistributed to B and C players in a round
     playerCount: [], // ONLY A | number of players on the planet they are currently on (relevant for redistribution calculations & planet stats)
@@ -99,7 +99,7 @@ ${gameID}---${playerID}: {
     role: "B", //
     wealth: [0],
     rank: [0],
-    planet: planetAndRoleObj.planet,
+    planet: `${planetID},${planetName}`,
     income: [0], // - income they recieve in a round
     declaredIncome: [0], // - income they declared in a round
     audit: [0], // - amount they were fined in an audit in a round
@@ -117,7 +117,7 @@ ${gameID}---${playerID}: {
     role: "C", //
     wealth: [0],
     rank: [0],
-    planet: [planetAndRoleObj.planet], //only an array for role C
+    planet: [`${planetID},${planetName}`], //only an array for role C
     income: [0], // - income they recieve in a round
     declaredIncome: [0], // - income they declared in a round
     audit: [0], // - amount they were fined in an audit in a round
