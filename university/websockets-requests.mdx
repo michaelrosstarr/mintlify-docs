@@ -59,7 +59,7 @@ planets :[
 ## joinGame
 joinGame creates an object in the elasticache-tax-game cache, with the key `${gameID}---${playerID}`. It will return a generated role and planet to each connection (once the planet is established), and update the host with the new player (playerID and name).
 
-When WebSockets receives the request, it scans DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY table. If there is a record in the table with the same connectionId & gameID, it gets that object from Elasticache and returns the full item to the user.
+<Warning>When WebSockets receives the request, it scans `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` table. If there is a record in the table with the same connectionId & gameID, it gets that object from Elasticache and returns the full item to the user.</Warning>
 
 ### Required data
 ```
