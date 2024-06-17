@@ -133,12 +133,13 @@ ${gameID}---${playerID}: {
     body: `host [${hostID}] alerted of player [${name}] `
 ```
 
-<Note>Each time a **new** player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma"}}`</Note>
+<Note>Each time a player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma", "type":"[new|rejoin]"}}`</Note>
 
 ### Existing Connection
-
-
-
+```javascript
+    statusCode: 200,
+    body: "{\"connectionId\":\"Zg2C4e7uliACEsg= \",\"playerID\":\"00001 \",\"name\":\"Emma \",\"role\":\"A\",\"wealth\":[0],\"rank\":[0],\"planet\":\"planet1,Quintaris\",\"taxRate\":[],\"redistributedWealth\":[],\"playerCount\":[],\"bankrupt\":[]}"
+```
 
 ## startGame
 startGame goes through all of the planets in the elasticache-tax-game cache, ensures that there are no planets with an awkward amount of players (checks the last planet), and then sends each player their planet (name and ID) and role.
@@ -163,3 +164,20 @@ gameID: [from POST /createGame] //string
     }
 }
 ```
+
+## startRound
+Should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
+
+### Required data
+```
+action: "game",
+type: "startRound",
+gameID: string,
+roundNumber: number
+```
+
+### Returns
+#### To Host
+
+
+#### To Players
