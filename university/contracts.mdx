@@ -443,8 +443,31 @@ Updates the consent form.
 
 Returns the game object as CSV
 
-**Request** `GET /games/:gameID`
+**Request** `GET /games/:gameID/csv`
 
 **Response**
 
 The game object as CSV with the "Content-Type" as "text/csv".
+
+```text
+"gameID","data","playerID"
+"624764","{""wealth"":[],""income"":[],""role"":"""",""planet"":[],""playerCount"":[],""declaredIncome"":[],""redistributedWealth"":[],""taxRate"":[],""audit"":[],""name"":""Uncle Fred"",""rank"":[],""id"":""c09fbeb1-1b2c-4146-a21d-ba048702cb8e"",""bankrupt"":[]}","c09fbeb1-1b2c-4146-a21d-ba048702cb8e"
+"624764","{""wealth"":[],""income"":[],""role"":"""",""planet"":[],""playerCount"":[],""declaredIncome"":[],""redistributedWealth"":[],""taxRate"":[],""audit"":[],""name"":""Bob is your uncle!"",""rank"":[],""id"":""f11c8ece-9df0-4db8-b91d-2c22d7872e39"",""bankrupt"":[]}","f11c8ece-9df0-4db8-b91d-2c22d7872e39"
+```
+
+# XLSX
+
+Getting the data in a way that frontend can generate it into an XLSX.
+
+**Request** `GET /games/:gameID/xlsx`
+
+**Response**
+
+```js
+{
+  xlsx: Player[],
+  settings: {
+    "Spreadsheet for Game(XXXXXX)
+  }
+}
+```
