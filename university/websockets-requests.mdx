@@ -133,7 +133,7 @@ ${gameID}---${playerID}: {
     body: `host [${hostID}] alerted of player [${name}] `
 ```
 
-<Note>Each time a **new** player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma"}}`</Note>
+<Note>Each time a player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma", "type":"[new/rejoin]"}}`</Note>
 
 ### Existing Connection
 
