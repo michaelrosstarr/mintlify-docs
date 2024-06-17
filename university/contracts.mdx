@@ -471,3 +471,24 @@ Getting the data in a way that frontend can generate it into an XLSX.
   }
 }
 ```
+
+# Recent Game
+
+Fetch the latest game and its config.
+
+**Request** `GET /games/recent`
+
+**Response**
+
+```js
+{
+  "success": true,
+  "game": {
+    "description": "This is a test game",
+    "gameID": "683687",
+    "options": {
+      "thats-what-she-said": true
+    }
+  }
+}
+```
