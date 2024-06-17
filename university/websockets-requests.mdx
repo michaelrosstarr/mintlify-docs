@@ -194,13 +194,30 @@ round: number
 
 <Warning>The WebSockets don't check if the stage duration is up. The response to `stageChanges` is sent in `handleStage`.</Warning>
 
-### handleStage
+### stageChanges
+#### Stage 1
+```
 
-#### Required Data: 
+```
+
+### handleStage
+#### Required Data
 ```
 action: "game",
 type: "handleStage",
 gameID: string,
 round: number, 
-stage: number //this should be the current stage | if handleStage() is being sent after stage 1, is should be 1
+stage: number //this should be the current stage | if handleStage() is being sent after stage 1, it should be 1
+```
+
+#### To Host
+```javascript
+    statusCode: 200,
+    body: `{"round":1,"stage":1,"stageStartTime":"2024-06-17T18:17:49.544Z","stageDuration":20}`
+```
+
+#### To Players 
+```javascript
+    statusCode: 200,
+    body: ``
 ```
