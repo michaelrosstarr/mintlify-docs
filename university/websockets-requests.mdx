@@ -133,12 +133,13 @@ ${gameID}---${playerID}: {
     body: `host [${hostID}] alerted of player [${name}] `
 ```
 
-<Note>Each time a player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma", "type":"[new/rejoin]"}}`</Note>
+<Note>Each time a player sends a joinGame request, the host will receive the following string: `{"message":{"playerID":"001a","playerName":"Emma", "type":"[new|rejoin]"}}`</Note>
 
 ### Existing Connection
-
-
-
+```javascript
+    statusCode: 200,
+    body: "{\"connectionId\":\"Zg2C4e7uliACEsg= \",\"playerID\":\"00001 \",\"name\":\"Emma \",\"role\":\"A\",\"wealth\":[0],\"rank\":[0],\"planet\":\"planet1,Quintaris\",\"taxRate\":[],\"redistributedWealth\":[],\"playerCount\":[],\"bankrupt\":[]}"
+```
 
 ## startGame
 startGame goes through all of the planets in the elasticache-tax-game cache, ensures that there are no planets with an awkward amount of players (checks the last planet), and then sends each player their planet (name and ID) and role.
