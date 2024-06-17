@@ -5,6 +5,7 @@ icon: 'terminal'
 ---
 * Values determined by the Server Stack are referred to as `[from METHOD /endpoint]`
 * Values determined by the player are referred to as `[from client]`
+* [Send requests](https://www.npmjs.com/package/ws?ref=blog.krum.io) to: `wss://w1ws57hjh0.execute-api.eu-central-1.amazonaws.com/prod/` 
 
 ## createGame
 createGame creates an object in the elasticache-tax-game cache, with the key `${gameID}`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
