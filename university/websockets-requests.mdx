@@ -195,14 +195,19 @@ round: number
 <Warning>The WebSockets don't check if the stage duration is up. The response to `stageChanges` is sent in `handleStage`.</Warning>
 
 ### stageChanges
+
+Response: `200 OK`
+
 #### Stage 1
 ```
 action: "game",
 type: "stageChanges",
 gameID: string,
+playerID: string
 round: number, 
 stage: number
-
+taxRate: number,
+planetID: string
 ```
 
 ### handleStage
