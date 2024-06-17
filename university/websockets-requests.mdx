@@ -155,15 +155,8 @@ gameID: [from POST /createGame] //string
 ```
 
 ### Each player receives:
-```javascript
-{
-    "message":{
-        "planetID":"planet1",
-        "planet_name":"Soralia",
-        "playerRole":"C"
-    }
-}
-```
+`{"message":{"planetID":"planet1","planet_name":"Soralia","playerRole":"C"}}
+`
 
 ## startRound
 Should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
@@ -173,7 +166,7 @@ Should be sent by the **Host**. Creates an array of items in `DynamoDBStack-Webs
 action: "game",
 type: "startRound",
 gameID: string,
-roundNumber: number
+round: number
 ```
 
 ### Returns
