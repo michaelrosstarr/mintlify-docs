@@ -492,3 +492,73 @@ Fetch the latest game and its config.
   }
 }
 ```
+
+# Game Configs
+
+Everything relating to the game Configs
+
+## Fetch all Configs
+
+Fetch all game Configs
+
+**Request** `GET /games/configs`
+
+**Response**
+
+```js
+{
+  "success": true,
+  "configs": [
+    {
+      "id": "bde6fc94-495b-4c45-9496-812f5f4594a0",
+      "config": {
+        "aliens": true,
+        "bloodyWar": true,
+        "what-she-said": "confrimed"
+      }
+    }
+  ]
+}
+```
+
+## Fetch specific config
+
+Fetch a specific config
+
+**Request** `GET /games/configs/:id`
+
+**Response**
+
+```js
+{
+  "success": true,
+  "config": {
+    "id": "bde6fc94-495b-4c45-9496-812f5f4594a0",
+    "config": {
+      "aliens": true,
+      "bloodyWar": true,
+      "what-she-said": "confrimed"
+    }
+  }
+}
+```
+
+## Add a new config
+
+Create a new config based on the body you pass in
+
+**Request** `POST /games/configs`
+
+```js
+{
+  ...GameConfigurationOptions
+}
+```
+
+**Response**
+
+```js
+{
+  "success": true
+}
+```
