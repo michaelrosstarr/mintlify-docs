@@ -402,8 +402,49 @@ Generates a planet name from OpenAI, passing through the starting letters throug
 ```js
 {
   "success": true,
-  "planet": {
-    "planetName": "TAYLARIA"
-  }
+  "planet": "TAYLARIA"
 }
 ```
+
+# Fetch Consent from
+
+Fetches the consent form.
+
+**Request** `GET /consent`
+
+**Response**
+```js
+{
+  markdown: "## That's what she said"
+}
+```
+
+# Update Consent Form
+
+Updates the consent form.
+
+**Request** `POST /consent`
+
+```js
+{
+  markdown: "## That's what she said"
+}
+````
+
+**Response*
+```js
+{ 
+  success: true, 
+  message: "Successfully updated the consent form." 
+}
+```
+
+# CSV
+
+Returns the game object as CSV
+
+**Request** `GET /games/:gameID`
+
+**Response**
+
+The game object as CSV with the "Content-Type" as "text/csv".
