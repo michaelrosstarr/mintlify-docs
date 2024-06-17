@@ -164,3 +164,20 @@ gameID: [from POST /createGame] //string
     }
 }
 ```
+
+## startRound
+Should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
+
+### Required data
+```
+action: "game",
+type: "startRound",
+gameID: string,
+roundNumber: number
+```
+
+### Returns
+#### To Host
+
+
+#### To Players
