@@ -183,11 +183,24 @@ round: number
     body: `{"message":{"round":1,"stage":1,"stageStartTime":"2024-06-17T17:48:58.380Z","stageDuration":20}}`
 ```
 
-## handleStage
-Handle stage is sent by a player that needed to make an action during that stage:
-- At the end of stage 1, all "A" players should send a handleStage request
-- At the end of stage 2, all "B" and "C" players should send a handleStage request
-- At the end of stage 3, **all** players should send a handleStage request
-- At the end of stage 4, "C" players should send a handleStage request
+## handleStage & stageChanges
+* `stageChanges` is sent by a player that needed to make an action during that stage:
+    - At the end of stage 1, all "A" players should send a `stageChanges` request
+    - At the end of stage 2, all "B" and "C" players should send a `stageChanges` request
+    - At the end of stage 3, **all** players should send a `stageChanges` request
+    - At the end of stage 4, "C" players should send a `stageChanges` request
+* `handleStage` should be sent by the **Host** when the stage is up (stageDuration has elapsed)
+    - This way, only one system is managing the time, and the WebSockets aren't using up a massive amount of processing power while each connection waits for stageDuration to elapse before sending a response.
 
-<Warning>The WebSockets don't check if the stage duration is up. For stage 1 and stage 4, responses will be sent per player. For stage 2 and stage 3, responses will be send when the whole planet has responded.</Warning>
+<Warning>The WebSockets don't check if the stage duration is up. The response to `stageChanges` is sent in `handleStage`.</Warning>
+
+### handleStage
+
+#### Required Data: 
+```
+action: "game",
+type: "handleStage",
+gameID: string,
+round: number, 
+stage: number //this should be the current stage | if handleStage() is being sent after stage 1, is should be 1
+```
