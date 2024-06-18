@@ -12,14 +12,14 @@ createGame creates an object in the elasticache-tax-game cache, with the key `${
 
 ### Required data
 ```
-action: "game",
-type: "createGame",
-gameID: [from POST /createGame] //string
-stageTime: [from client] //in seconds (eg: 20 = 20s | so a round will be 1m 20s)
-auditChance: [from client] //number, decimal (eg: 20% = 0.20)
-finePercent: [from client] //number, decimal (eg: 20% = 0.20)
-pcm: [from client] //number, decimal (eg: 1.7) | planet collection multiplier
-defaultRate: [from client] //number, decimal (eg: 20% = 0.20)
+action: string //MUST BE "game" 
+type: string //MUST BE "createGame" 
+gameID: string //[from RestAPI]
+stageTime: number //in seconds (eg: 20 = 20s | so a round will be 1m 20s)
+auditChance: number //number, decimal (eg: 20% = 0.20)
+finePercent: number //number, decimal (eg: 20% = 0.20)
+pcm: number //number, decimal (eg: 1.7) | planet collection multiplier
+defaultRate: number //number, decimal (eg: 20% = 0.20)
 ```
 
 example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageTime":20,"auditChance":0.25,"finePercent":0.15,"pcm":1.7,"defaultRate":0.30}`
@@ -27,24 +27,24 @@ example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageT
 ### Elasticache
 ```
 ${gameID}: {
-    hostID: connectionID,
-    gameID: data.gameID,
+    hostID: string,
+    gameID: string,
     gameConfiguration: {
-        stageTime: data.stageTime,
-        auditChance: data.auditChance,
-        finePercent: data.finePercent,
-        pcm: data.pcm,
-        defaultRate: data.defaultRate,
+        stageTime: number,
+        auditChance: number,
+        finePercent: number,
+        pcm: number,
+        defaultRate: number,
       }
 }
 
 planets :[
   {
-      planetID: "planet0",
-      name: "planet0",
+      planetID: string //like "planet0", consecutive
+      name: string //AI generated, like "Valerion"
       players: [{
-        connectionID: connectionID,
-        role: ["A" || "B" || "C"]
+        connectionID: string, //player's connection id
+        role: string // one of ["A" || "B" || "C"]
     }],
   },
 ]
