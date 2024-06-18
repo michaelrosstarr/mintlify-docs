@@ -45,25 +45,25 @@ example: `{"action":"game","type":"createGame","gameID":"18062024-1845","stageTi
       }
 }
 
-`planets-${gameID}` :[
-  {
-      planetID: string, //like "planet0", consecutive
-      name: string, //AI generated, like "Valerion"
-      taxRate: number, //starts as defaultRate
-      players: [{
+`${planetID}-${gameID}`: {
+    planetID: "planet1",
+    planet_name: `${AI generated}`,
+    taxRate: data.defaultRate,
+    players: [{
         connectionID: string, //player's connection id
         player_name: string,
         role: string // one of ["A" || "B" || "C"]
     }],
-  },
-]
+  };
+
+`planets-${gameID}` : "1";
 ```
 
 ### Returns
 
 ```javascript
     statusCode: 200,
-    body: `["OK","OK"]`
+    body: `["OK","OK","OK"]`
 ```
 
 ## joinGame
