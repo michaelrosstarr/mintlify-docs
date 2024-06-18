@@ -75,7 +75,7 @@ example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID
 
 ### New Connection
 #### Elasticache: Role A
-```
+```javascript
 `${gameID}---${playerID}`: {
     connectionId: string,
     playerID: string,
@@ -92,7 +92,7 @@ example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID
 ```
 
 #### Role B
-```
+```javascript
 `${gameID}---${playerID}`: {
     connectionId: string,
     playerID: string,
@@ -109,7 +109,7 @@ example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID
 ```
 
 #### Role C
-```
+```javascript
 ${gameID}---${playerID}: {
     connectionId: string,
     playerID: string,
@@ -146,7 +146,7 @@ startGame goes through all of the planets in the elasticache-tax-game cache, ens
     * The existing planets are determined by the player's position in the player array: `planetsObject[newestPlanet.players.indexOf(player)].players.push`
 
 ### Required data
-```
+```javascript
 action: string, //MUST BE "game"
 type: string, //MUST BE "startGame"
 gameID: string
@@ -160,7 +160,7 @@ The planet_members array **includes** this player
 It should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
 
 ### Required data
-```
+```javascript
 action: string, //MUST BE "game",
 type: string, //MUST BE "startRound"
 gameID: string,
@@ -196,7 +196,7 @@ round: number
 Response: `200 OK`
 
 #### Stage 1
-```
+```javascript
 action: "game",
 type: "stageChanges",
 gameID: string,
@@ -209,7 +209,7 @@ planetID: string
 
 ### handleStage
 #### Required Data
-```
+```javascript
 action: "game",
 type: "handleStage",
 gameID: string,
