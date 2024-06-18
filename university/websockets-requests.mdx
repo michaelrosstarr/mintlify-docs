@@ -11,7 +11,7 @@ icon: 'terminal'
 createGame creates an object in the elasticache-tax-game cache, with the key `${gameID}`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
 
 ### Required data
-```
+```javascript
 action: string //MUST BE "game" 
 type: string //MUST BE "createGame" 
 gameID: string //[from RestAPI]
@@ -63,7 +63,7 @@ joinGame creates an object in the elasticache-tax-game cache, with the key `${ga
 <Warning>When WebSockets receives the request, it scans `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` table. If there is a record in the table with the same connectionId & gameID, it gets that object from Elasticache and returns the full item to the user.</Warning>
 
 ### Required data
-```
+```javascript
 action: string, //MUST BE "game" 
 type: string, //MUST BE "joinGame" 
 gameID: string, 
@@ -153,15 +153,16 @@ gameID: string
 ```
 
 ### Each player receives:
-`{"message":{"planetID":"planet1","planet_name":"Soralia","playerRole":"C",}}`
+The planet_members array **includes** this player
+`{"message":{"planetID":"planet1","planet_name":"Soralia","playerRole":"C","planet_members":["Emma","Jules","Steve","Thomas","Kelvin","Dana"]}}`
 
 ## startRound
 It should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
 
 ### Required data
 ```
-action: "game",
-type: "startRound",
+action: string, //MUST BE "game",
+type: string, //MUST BE "startRound"
 gameID: string,
 round: number
 ```
