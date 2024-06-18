@@ -25,3 +25,5 @@ Using DynamoDB, we need to store connection info of the player.
 </Frame>
 
 The entry gets created when the player connects to the web socket for the first time. We need to bind the `gameID` and `playerID`. The reason for this, is that if the player gets disconnected for whatever reason, they can reconnect and we simply just update the connectionId with the `playerID` and `gameID`. We will just have a function that the client has to call to valdiate their information against the connectionst table.
+
+# The rest, no..., will document them later
