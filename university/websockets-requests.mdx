@@ -40,8 +40,9 @@ example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageT
 
 `planets-${gameID}` :[
   {
-      planetID: string //like "planet0", consecutive
-      name: string //AI generated, like "Valerion"
+      planetID: string, //like "planet0", consecutive
+      name: string, //AI generated, like "Valerion"
+      taxRate: number, //starts as defaultRate
       players: [{
         connectionID: string, //player's connection id
         player_name: string,
