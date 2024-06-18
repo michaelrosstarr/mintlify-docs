@@ -64,11 +64,11 @@ joinGame creates an object in the elasticache-tax-game cache, with the key `${ga
 
 ### Required data
 ```
-action: "game",
-type: "joinGame",
-gameID: [from client] //string
-playerID: [from POST /joinGame] //string
-name: [from client] //string
+action: string, //MUST BE "game" 
+type: string, //MUST BE "joinGame" 
+gameID: string, 
+playerID: string, //from RestAPI [ POST /joinGame]
+name: string //from client
 ```
 
 example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID":"001a","name":"Emma"}`
