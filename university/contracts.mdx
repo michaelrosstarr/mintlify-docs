@@ -233,22 +233,13 @@ Should broadcast to all connected clients that the game has been finished.
 
 Restful API route to process the previous round. Will fetch all player data from the ElasticCache, process it and then batch update the DynamoDB for the current.
 
-**Request** `PATCH /process`
-
-```js
-{
-    gameID: GameID
-    round: RoundNumber
-}
-```
+**Request** `GET /process/:gameID/:roundNumber`
 
 **Response** `200 OK`
 
 ```js
 {
-    gameID: GameID,
-    round: RoundNumber,
-    message: "Processed all player data."
+  // whatever it returns
 }
 ```
 
