@@ -11,40 +11,42 @@ icon: 'terminal'
 createGame creates an object in the elasticache-tax-game cache, with the key `${gameID}`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
 
 ### Required data
-```
-action: "game",
-type: "createGame",
-gameID: [from POST /createGame] //string
-stageTime: [from client] //in seconds (eg: 20 = 20s | so a round will be 1m 20s)
-auditChance: [from client] //number, decimal (eg: 20% = 0.20)
-finePercent: [from client] //number, decimal (eg: 20% = 0.20)
-pcm: [from client] //number, decimal (eg: 1.7) | planet collection multiplier
-defaultRate: [from client] //number, decimal (eg: 20% = 0.20)
+```javascript
+action: string //MUST BE "game" 
+type: string //MUST BE "createGame" 
+gameID: string //[from RestAPI]
+stageTime: number //in seconds (eg: 20 = 20s | so a round will be 1m 20s)
+auditChance: number //decimal (eg: 20% = 0.20)
+finePercent: number //decimal (eg: 20% = 0.20)
+pcm: number //decimal (eg: 1.7) | planet collection multiplier
+defaultRate: number //decimal (eg: 20% = 0.20)
 ```
 
 example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageTime":20,"auditChance":0.25,"finePercent":0.15,"pcm":1.7,"defaultRate":0.30}`
 
 ### Elasticache
-```
-${gameID}: {
-    hostID: connectionID,
-    gameID: data.gameID,
+```javascript
+`${gameID}`: {
+    hostID: string,
+    gameID: string,
     gameConfiguration: {
-        stageTime: data.stageTime,
-        auditChance: data.auditChance,
-        finePercent: data.finePercent,
-        pcm: data.pcm,
-        defaultRate: data.defaultRate,
+        stageTime: number,
+        auditChance: number,
+        finePercent: number,
+        pcm: number,
+        defaultRate: number,
       }
 }
 
-planets :[
+`planets-${gameID}` :[
   {
-      planetID: "planet0",
-      name: "planet0",
+      planetID: string, //like "planet0", consecutive
+      name: string, //AI generated, like "Valerion"
+      taxRate: number, //starts as defaultRate
       players: [{
-        connectionID: connectionID,
-        role: ["A" || "B" || "C"]
+        connectionID: string, //player's connection id
+        player_name: string,
+        role: string // one of ["A" || "B" || "C"]
     }],
   },
 ]
@@ -63,68 +65,65 @@ joinGame creates an object in the elasticache-tax-game cache, with the key `${ga
 <Warning>When WebSockets receives the request, it scans `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` table. If there is a record in the table with the same connectionId & gameID, it gets that object from Elasticache and returns the full item to the user.</Warning>
 
 ### Required data
-```
-action: "game",
-type: "joinGame",
-gameID: [from client] //string
-playerID: [from POST /joinGame] //string
-name: [from client] //string
+```javascript
+action: string, //MUST BE "game" 
+type: string, //MUST BE "joinGame" 
+gameID: string, 
+playerID: string, //from RestAPI [ POST /joinGame]
+name: string //from client
 ```
 
 example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID":"001a","name":"Emma"}`
 
 ### New Connection
-
-#### Role A
-```
-${gameID}---${playerID}: {
-    connectionId: connectionID,
-    playerID: data.playerID,
-    name: data.name,
-    role: "A", //
-    wealth: [0],
-    rank: [0],
-    planet: `${planetID},${planetName}`, // 
-    taxRate: [], // ONLY A
-    redistributedWealth: [], // ONLY A | amount they redistributed to B and C players in a round
-    playerCount: [], // ONLY A | number of players on the planet they are currently on (relevant for redistribution calculations & planet stats)
-    bankrupt: [], // - true if they went bankrupt in a round
+#### Elasticache: Role A
+```javascript
+`${gameID}---${playerID}`: {
+    connectionId: string,
+    playerID: string,
+    name: string,
+    role: string, // "A"
+    wealth: Array<number>, //starts as [0]
+    rank: Array<number>, //starts as [0]
+    planet: string, //`${planetID},${planetName}`,
+    taxRate: Array<number>, // ONLY A | starts as [defaultRate]
+    redistributedWealth: Array<number>, // ONLY A | amount they redistributed to B and C players in a round
+    playerCount: Array<number>, // ONLY A | number of players on the planet they are currently on 
+    bankrupt: Array<boolean>, // - true if they went bankrupt in a round
 }
 ```
 
 #### Role B
-```
-${gameID}---${playerID}: {
-
-    connectionId: connectionID,
-    playerID: data.playerID,
-    name: data.name,
-    role: "B", //
-    wealth: [0],
-    rank: [0],
+```javascript
+`${gameID}---${playerID}`: {
+    connectionId: string,
+    playerID: string,
+    name: string,
+    role: string, // "B"
+    wealth: Array<number>, //starts as [0]
+    rank: Array<number>, //starts as [0]
     planet: `${planetID},${planetName}`,
-    income: [0], // - income they recieve in a round
-    declaredIncome: [0], // - income they declared in a round
-    audit: [0], // - amount they were fined in an audit in a round
-    bankrupt: [], // - true if they went bankrupt in a round
+    income: Array<number>, // - income they recieve in a round
+    declaredIncome: Array<number>, // - income they declared in a round
+    audit: Array<number>, // - amount they were fined in an audit in a round
+    bankrupt: Array<boolean>, // - true if their planet went bankrupt in a round
 }
 ```
 
 #### Role C
-```
+```javascript
 ${gameID}---${playerID}: {
-
-    connectionId: connectionID,
-    playerID: data.playerID,
-    name: data.name,
-    role: "C", //
-    wealth: [0],
-    rank: [0],
-    planet: [`${planetID},${planetName}`], //only an array for role C
-    income: [0], // - income they recieve in a round
-    declaredIncome: [0], // - income they declared in a round
-    audit: [0], // - amount they were fined in an audit in a round
-    bankrupt: [], // - true if they went bankrupt in a round
+    connectionId: string,
+    playerID: string,
+    name: string,
+    role: string, // "C"
+    wealth: Array<number>,
+    rank: Array<number>,
+    planet: Array<string>, //only an array for role C [`${planetID},${planetName}`]
+    income: Array<number>, // - income they recieve in a round
+    declaredIncome: Array<number>, // - income they declared in a round
+    audit: Array<number>, // - amount they were fined in an audit in a round
+    bankrupt: Array<boolean>, // - true if they went bankrupt in a round
 }
 ```
 
@@ -149,23 +148,23 @@ startGame goes through all of the planets in the elasticache-tax-game cache, ens
     * The existing planets are determined by the player's position in the player array: `planetsObject[newestPlanet.players.indexOf(player)].players.push`
 
 ### Required data
-```
-action: "game",
-type: "startGame",
-gameID: [from POST /createGame] //string
+```javascript
+action: string, //MUST BE "game"
+type: string, //MUST BE "startGame"
+gameID: string
 ```
 
 ### Each player receives:
-`{"message":{"planetID":"planet1","planet_name":"Soralia","playerRole":"C"}}
-`
+The planet_members array **includes** this player
+`{"message":{"planetID":"planet1","planet_name":"Soralia","playerRole":"C","planet_members":["Emma","Jules","Steve","Thomas","Kelvin","Dana"]}}`
 
 ## startRound
 It should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
 
 ### Required data
-```
-action: "game",
-type: "startRound",
+```javascript
+action: string, //MUST BE "game",
+type: string, //MUST BE "startRound"
 gameID: string,
 round: number
 ```
@@ -199,7 +198,7 @@ round: number
 Response: `200 OK`
 
 #### Stage 1
-```
+```javascript
 action: "game",
 type: "stageChanges",
 gameID: string,
@@ -212,7 +211,7 @@ planetID: string
 
 ### handleStage
 #### Required Data
-```
+```javascript
 action: "game",
 type: "handleStage",
 gameID: string,
