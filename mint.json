@@ -50,6 +50,7 @@
       "group": "Tax Game",
       "pages": [
         "university/getting-started",
+        "university/stack",
         "university/configuration",
         "university/guide",
         "university/contracts",

@@ -4,6 +4,18 @@ description: 'Contains all of the database schemas'
 icon: 'database'
 ---
 
+# Table Names
+
+```js
+const DATABASE_TABLES = {
+  GAMES: "DynamoDBStack-Games1C5D5B9B-ZH1T302Z584H",
+  PLAYERS: "DynamoDBStack-PlayersCF26CFA0-1VQ9CL3LI6U8T",
+  CONNECTIONS: "DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY",
+  CONSENT: "DynamoDBStack-Consent9C3F6453-S164W1WXMRDI",
+  GAME_CONFIGS: "DynamoDBStack-GameConfigs94BEDDC7-1CCMZUJSWGMU"
+}
+```
+
 # Connection table
 
 Using DynamoDB, we need to store connection info of the player.
