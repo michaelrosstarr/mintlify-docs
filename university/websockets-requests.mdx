@@ -12,17 +12,24 @@ createGame creates an object in the elasticache-tax-game cache, with the key `${
 
 ### Required data
 ```javascript
-action: string //MUST BE "game" 
-type: string //MUST BE "createGame" 
-gameID: string //[from RestAPI]
-stageTime: number //in seconds (eg: 20 = 20s | so a round will be 1m 20s)
-auditChance: number //decimal (eg: 20% = 0.20)
-finePercent: number //decimal (eg: 20% = 0.20)
-pcm: number //decimal (eg: 1.7) | planet collection multiplier
-defaultRate: number //decimal (eg: 20% = 0.20)
+{
+    action: string, //MUST BE "game" 
+    type: string, //MUST BE "createGame" 
+    gameID: string, //[from RestAPI]
+    stageTime: number, //in seconds (eg: 20 = 20s | so a round will be 1m 20s)
+    auditChance: number, //decimal (eg: 20% = 0.20)
+    finePercent: number, //decimal (eg: 20% = 0.20)
+    planetCollectionMultiplier: number, //decimal (eg: 1.7) | planet collection multiplier
+    taxRate: number, //decimal (eg: 20% = 0.20)
+    declaredIncomePercent: number,
+    incomeMax: number,
+    incomeMin: number,
+    bankruptcyThreshold: number,
+    generateNewIncomeEachRound: boolean
+}
 ```
 
-example: `{"action":"game","type":"createGame","gameID":"game-c3b4i7ybc","stageTime":20,"auditChance":0.25,"finePercent":0.15,"pcm":1.7,"defaultRate":0.30}`
+example: `{"action":"game","type":"createGame","gameID":"18062024-1845","stageTime":20,"auditChance":0.25,"finePercent":0.15,"planetCollectionMultiplier":1.7,"taxRate":0.30, "declaredIncomePercent": 0.40, "incomeMax":1200, "incomeMin":600, "bankruptcyThreshold": 0, generateNewIncomeEachRound: false}`
 
 ### Elasticache
 ```javascript
