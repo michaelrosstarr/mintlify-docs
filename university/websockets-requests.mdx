@@ -71,7 +71,7 @@ example: `{"action":"game","type":"createGame","gameID":"18062024-1845","stageTi
 
 ```javascript
     statusCode: 200,
-    body: `["OK","OK","OK"]`
+    body: `{"type":"createGame","message":["OK","OK","OK"]}`
 ```
 
 ## joinGame
@@ -145,7 +145,7 @@ ${gameID}---${playerID}: {
 #### Returns
 ```javascript
     statusCode: 200,
-    body: `host [${hostID}] alerted of player [${name}] `
+    body: `{"type":"joinGame","message":{"options":{"stageTime":20,"auditChance":0.25,"finePercent":0.15,"planetCollectionMultiplier":1.7,"taxRate":0.3,"declaredIncomePercent":0.4,"incomeMax":1200,"incomeMin":600,"bankruptcyThreshold":0,"generateNewIncomeEachRound":false}}}`
 ```
 
 <Note>Each time a player sends a joinGame request, the host will receive the following string: `{"playerID":"001a","playerName":"Emma", "type":"[new|rejoin]"}`</Note>
@@ -171,7 +171,10 @@ gameID: string
 
 ### Each player receives:
 The planet_members array **includes** this player
-`{"planetID":"planet1","planet_name":"Soralia","playerRole":"C","planet_members":["Emma","Jules","Steve","Thomas","Kelvin","Dana"]}`
+`{"type":"startGame","message":{"planetID":"planet1","planet_name":"Mystoria","playerRole":"A","planet_members":["Emma","Jules","Stevie","Jules","Thomas"]}}`
+
+### Host receives:
+`{"type":"startGame","message":"OK"}`
 
 ## startRound
 It should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
@@ -188,13 +191,13 @@ round: number
 #### To Host
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":1,"stageStartTime":"2024-06-17T18:17:49.544Z","stageDuration":20}`
+    body: `{"type":"startRound","message":{"round":1,"stage":1,"stageStartTime":"19/06/2024, 19:07:57","stageDuration":20}}`
 ```
 
 #### To Players
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":1,"stageStartTime":"2024-06-17T17:48:58.380Z","stageDuration":20}`
+    body: `{"type":"startRound","message":{"round":1,"stage":1,"stageStartTime":"19/06/2024, 19:07:57","stageDuration":20}}`
 ```
 
 ## handleStage & stageChanges
@@ -210,8 +213,6 @@ round: number
 
 ### stageChanges
 
-Response: `200 OK`
-
 #### Stage 1
 ```javascript
 //ONLY SENT BY ROLE A PLAYERS
@@ -224,6 +225,7 @@ stage: number, //MUST BE 1
 taxRate: number,
 planetID: string
 ```
+**Response:**  `{"type":"stageChanges","message":["OK","OK"]}`
 
 
 #### Stage 2
@@ -238,7 +240,7 @@ stage: number, //MUST BE 2
 income: number,
 declaredIncome: number
 ```
-
+**Response:** `{"type":"stageChanges","message":"OK"}`
 
 #### Stage 3
 ```javascript
@@ -252,7 +254,6 @@ newWealth: number,
 audit: number, //ONLY FOR B AND C PLAYERS
 redistributed: number, //ONLY FOR A PLAYERS. FOR THE RECORDS
 ```
-
 
 #### Stage 4
 ```javascript
@@ -280,31 +281,31 @@ stage: number //this should be the current stage | if handleStage() is being sen
 #### To Host
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20}`
+    body: `{"type":"handleStage","message":{"round":1,"stage":2,"stageStartTime":"19/06/2024, 19:10:21","stageDuration":20}}`
 ```
 
 #### To Players - after stage 1
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20,"taxRate":0.15}`
+    body: `{"type":"handleStage","message":{"round":1,"stage":2,"stageStartTime":"19/06/2024, 19:10:21","stageDuration":20,"taxRate":0.7}}`
 ```
 
 #### To Players - after stage 2
 **A Players | Not Bankrupt**
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20,"bankrupt":false,"declared":[800,1100,600,600],"redistributable":3689}`
+    body: `{"type":"handleStage","message":{"round":1,"stage":3,"stageStartTime":"19/06/2024, 19:12:23","stageDuration":20,"bankrupt":false,"declared":[0,600],"redistributable":306}}`
 ```
 
 **A Players | Bankrupt**
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20,"bankrupt":true}`
+    body: `{"type":"handleStage","message":{"round":1,"stage":3,"stageStartTime":"19/06/2024, 19:12:23","stageDuration":20,"bankrupt":true}}`
 ```
 
 **Other Players**
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20}`
+    body: `{"type":"handleStage","message":{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20}}`
 ```
 
