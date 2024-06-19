@@ -57,7 +57,8 @@
         "university/interfaces",
         "university/database",
         "university/websockets",
-        "university/websockets-requests"
+        "university/websockets-requests",
+        "university/tos"
       ]
     }
   ],
