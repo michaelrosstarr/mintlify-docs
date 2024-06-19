@@ -213,6 +213,7 @@ Response: `200 OK`
 
 #### Stage 1
 ```javascript
+//ONLY SENT BY ROLE A PLAYERS
 action: string, //MUST BE "game",
 type: string, //MUST BE "stageChanges",
 gameID: string,
@@ -226,6 +227,7 @@ planetID: string
 
 #### Stage 2
 ```javascript
+//ONLY SENT BY ROLE B/C PLAYERS
 action: string, //MUST BE "game",
 type: string, //MUST BE "stageChanges",
 gameID: string,
