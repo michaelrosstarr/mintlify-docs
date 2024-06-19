@@ -522,7 +522,7 @@ Fetch a specific config
 
 ### Add a new config
 
-Create a new config based on the body you pass in
+Create a new config based on the body you pass in.
 
 **Request** `POST /games/configs`
 
@@ -537,5 +537,37 @@ Create a new config based on the body you pass in
 ```js
 {
   "success": true
+}
+```
+
+### Get latest config
+
+Fetches the latest config that was craeted.
+
+**Request** `GET /games/configs/latest`
+
+**Response**
+
+```js
+{
+  "success": true,
+  "config": {
+    "id": "484c6459-08bd-47f3-81aa-6724d875f2a4",
+    "config": {
+      "description": "3rd time is the charm - Test game using the config route now - delete this later",
+      "options": {
+        "auditChance": 0.6,
+        "planetCollectionMultiplier": 1.7,
+        "taxRate": 0.4,
+        "finePercent": 2,
+        "declaredIncomePercent": 1,
+        "stageTime": 60,
+        "bankruptcyThreshold": 200,
+        "incomeMin": 600,
+        "generateNewIncomeEachRound": true,
+        "incomeMax": 1400
+      }
+    }
+  }
 }
 ```
