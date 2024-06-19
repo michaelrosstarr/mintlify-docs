@@ -204,7 +204,7 @@ round: number
     - At the end of stage 3, **all** players should send a `stageChanges` request
     - At the end of stage 4, "C" players should send a `stageChanges` request
 * `handleStage` should be sent by the **Host** when the stage is up (stageDuration has elapsed)
-    - This way, only one system is managing the time, and the WebSockets aren't using up a massive amount of processing power while each connection waits for stageDuration to elapse before sending a response.
+    - This way, only one system is managing the time, and the WebSockets aren't using up a massive amount of processing power while each connection waits for stage duration to elapse before sending a response.
 
 <Warning>The WebSockets don't check if the stage duration is up. The response to `stageChanges` is sent in `handleStage`.</Warning>
 
@@ -219,9 +219,9 @@ action: string, //MUST BE "game",
 type: string, //MUST BE "stageChanges",
 gameID: string,
 playerID: string
-round: number, 
+round: number,
 stage: number, //MUST BE 1
-taxRate: number, 
+taxRate: number,
 planetID: string
 ```
 
@@ -233,7 +233,7 @@ action: string, //MUST BE "game",
 type: string, //MUST BE "stageChanges",
 gameID: string,
 playerID: string
-round: number, 
+round: number,
 stage: number, //MUST BE 2
 income: number,
 declaredIncome: number
@@ -246,7 +246,7 @@ action: string, //MUST BE "game",
 type: string, //MUST BE "stageChanges",
 gameID: string,
 playerID: string
-round: number, 
+round: number,
 stage: number, //MUST BE 3
 
 ```
@@ -258,7 +258,7 @@ action: string, //MUST BE "game",
 type: string, //MUST BE "stageChanges",
 gameID: string,
 playerID: string
-round: number, 
+round: number,
 stage: number, //MUST BE 4
 
 ```
@@ -271,7 +271,7 @@ eg : `{"action":"game","type":"stageChanges","gameID":"18062024-2210","round":1,
 action: "game",
 type: "handleStage",
 gameID: string,
-round: number, 
+round: number,
 stage: number //this should be the current stage | if handleStage() is being sent after stage 1, it should be 1
 ```
 
@@ -288,13 +288,21 @@ stage: number //this should be the current stage | if handleStage() is being sen
 ```
 
 #### To Players - after stage 2
+**A Players | Not Bankrupt**
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 15:41:22","stageDuration":20,"declared":[800,1100],"redistributable":2261}`
+    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20,"bankrupt":false,"declared":[800,1100,600,600],"redistributable":3689}`
 ```
 
+**A Players | Bankrupt**
+```javascript
+    statusCode: 200,
+    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20,"bankrupt":true}`
+```
 
-#### To Players - after stage 3
+**Other Players**
+```javascript
+    statusCode: 200,
+    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20}`
+```
 
-
-#### To Players - after stage 4
