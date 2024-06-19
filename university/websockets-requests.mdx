@@ -170,7 +170,7 @@ gameID: string
 
 ### Each player receives:
 The planet_members array **includes** this player
-`{"message":{"planetID":"planet1","planet_name":"Soralia","playerRole":"C","planet_members":["Emma","Jules","Steve","Thomas","Kelvin","Dana"]}}`
+`{"planetID":"planet1","planet_name":"Soralia","playerRole":"C","planet_members":["Emma","Jules","Steve","Thomas","Kelvin","Dana"]}`
 
 ## startRound
 It should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
@@ -193,7 +193,7 @@ round: number
 #### To Players
 ```javascript
     statusCode: 200,
-    body: `{"message":{"round":1,"stage":1,"stageStartTime":"2024-06-17T17:48:58.380Z","stageDuration":20}}`
+    body: `{"round":1,"stage":1,"stageStartTime":"2024-06-17T17:48:58.380Z","stageDuration":20}`
 ```
 
 ## handleStage & stageChanges
