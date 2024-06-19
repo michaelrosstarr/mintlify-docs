@@ -213,14 +213,50 @@ Response: `200 OK`
 
 #### Stage 1
 ```javascript
-action: "game",
-type: "stageChanges",
+action: string, //MUST BE "game",
+type: string, //MUST BE "stageChanges",
 gameID: string,
 playerID: string
 round: number, 
-stage: number
+stage: number, //MUST BE 1
 taxRate: number,
 planetID: string
+```
+
+
+#### Stage 2
+```javascript
+action: string, //MUST BE "game",
+type: string, //MUST BE "stageChanges",
+gameID: string,
+playerID: string
+round: number, 
+stage: number, //MUST BE 2
+
+```
+
+
+#### Stage 3
+```javascript
+action: string, //MUST BE "game",
+type: string, //MUST BE "stageChanges",
+gameID: string,
+playerID: string
+round: number, 
+stage: number, //MUST BE 3
+
+```
+
+
+#### Stage 4
+```javascript
+action: string, //MUST BE "game",
+type: string, //MUST BE "stageChanges",
+gameID: string,
+playerID: string
+round: number, 
+stage: number, //MUST BE 4
+
 ```
 
 eg : `{"action":"game","type":"stageChanges","gameID":"18062024-2210","round":1,"stage":1,"playerID":"00001","planetID":"planet1","taxRate":0.7}`
@@ -238,11 +274,19 @@ stage: number //this should be the current stage | if handleStage() is being sen
 #### To Host
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":2,"stageStartTime":"2024-06-19T07:40:16.920Z","stageDuration":20}`
+    body: `{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20}`
 ```
 
-#### To Players 
+#### To Players - after stage 1
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":2,"stageStartTime":"2024-06-19T07:40:16.920Z","stageDuration":20,"taxRate":0.15}`
+    body: `{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20,"taxRate":0.15}`
 ```
+
+#### To Players - after stage 2
+
+
+#### To Players - after stage 3
+
+
+#### To Players - after stage 4
