@@ -3,11 +3,12 @@ title: 'Web Socket Requests'
 description: 'Specification of the data that needs to be sent to the WebSocket connection to execute a given function. For each function, you can find the data structure and an example of a working command.'
 icon: 'terminal'
 ---
+## WebSocket Documentation
 * Values determined by the Server Stack are referred to as `[from METHOD /endpoint]`
 * Values determined by the player are referred to as `[from client]`
 * [Send requests](https://www.npmjs.com/package/ws?ref=blog.krum.io) to: `wss://w1ws57hjh0.execute-api.eu-central-1.amazonaws.com/prod/`
 
-> If at any point you need to see what a given player's object looks like, you can always send this query: `{"action":"check","type":"redis","method":"player","pid":"00001","gid":"18062024-2210"}` where pid is playerID and gid is gameID.
+<Note>If at any point you need to see what a given player's object looks like, you can always send this query: `{"action":"check","type":"redis","method":"player","pid":"00001","gid":"18062024-2210"}` where pid is playerID and gid is gameID.</Note>
 
 ## createGame
 createGame creates an object in the elasticache-tax-game cache, with the key `${gameID}`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
@@ -71,13 +72,13 @@ example: `{"action":"game","type":"createGame","gameID":"18062024-1845","stageTi
 
 ```javascript
     statusCode: 200,
-    body: `["OK","OK","OK"]`
+    body: `{"type":"createGame","message":["OK","OK","OK","OK","OK","OK"]}`
 ```
 
 ## joinGame
 joinGame creates an object in the elasticache-tax-game cache, with the key `${gameID}---${playerID}`. It will return a generated role and planet to each connection (once the planet is established), and update the host with the new player (playerID and name).
 
-> **When WebSockets receives the request, it scans `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` table. If there is a record in the table with the same connectionId & gameID, it gets that object from Elasticache and returns the full item to the user.**
+<Note> When WebSockets receives the request, it scans `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` table. If there is a record in the table with the same connectionId & gameID, it gets that object from Elasticache and returns the full item to the user.</Note>
 
 ### Required data
 ```javascript
@@ -208,6 +209,8 @@ round: number
 
 <Warning>The WebSockets don't check if the stage duration is up. The response to `stageChanges` is sent in `handleStage`.</Warning>
 
+<Warning>If players don't make a change, the request they send **needs** to have the default values in it. WebSockets will apply the logic to what is sent (so if the player sends 0, it will use 0 as the value), or send a `401 BAD REQUEST` if it's missing</Warning>
+
 ### stageChanges
 
 Response: `{"type":"stageChanges","message":"OK"}`
@@ -263,7 +266,8 @@ gameID: string,
 playerID: string
 round: number,
 stage: number, //MUST BE 4
-
+newPlanetID: string,
+newPlanetName: string,
 ```
 
 eg : `{"action":"game","type":"stageChanges","gameID":"18062024-2210","round":1,"stage":1,"playerID":"00001","planetID":"planet1","taxRate":0.7}`
@@ -301,6 +305,25 @@ stage: number //this should be the current stage | if handleStage() is being sen
     body: `{"type":"startStage","message":{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20}}`
 ```
 
+#### After the last stage of the round (automatically calls endRound)
+```javascript
+    statusCode: 200,
+     body: `{
+       "type":"endRound",
+       "message":{
+       "A":[
+          {"connectionId":"Zru4medkliACEXA=","playerID":"00001","name":"Emma","role":"A","wealth":[0],"rank":[0],"planet":"planet1,Xerion","taxRate":[0.3],"redistributedWealth":[0],"playerCount":[5],"bankrupt":[false]}
+        ],
+          "B":[
+            {"connectionId":"Zru5EcnpFiACHEQ=","playerID":"00002","name":"Jules","role":"B","wealth":[0],"rank":[0],"planet":"planet1,Xerion","income":[0],"declaredIncome":[0],"audit":[0],"bankrupt":[false]}
+        ],
+        "C":[
+          {"connectionId":"Zru5Ve4rliACEeg=","playerID":"00003","name":"Stevie","role":"C","wealth":[0],"rank":[0],"planet":["planet1,Xerion"],"income":[0],"declaredIncome":[0],"audit":[0],"bankrupt":[false]}
+        ]
+      }
+    }`
+```
+
 #### To Players - after stage 1
 `{"type":"startStage","message":{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20,"taxRate":0.15}}`
 
@@ -314,6 +337,48 @@ stage: number //this should be the current stage | if handleStage() is being sen
 `{"type":"startStage","message":{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20}}`
 
 #### To Players - after stage 3
+**A Players**
+`{"type":"startStage","message":{"round":1,"stage":4,"stageStartTime":"20/06/2024, 12:04:48","stageDuration":20,"updatedWealth":3850,"auditPool":850}}`
 
+**B+C Players**
+`{"type":"startStage","message":{"round":1,"stage":4,"stageStartTime":"20/06/2024, 12:04:48","stageDuration":20,"updatedWealth":137.8,"rebate":137.8}}`
 
 #### To Players - after stage 4
+```
+{"type":"endRound",
+"message":{
+  "playerData":{
+    "connectionId":"Zru5Ve4rliACEeg=",
+    "playerID":"00003",
+    "name":"Stevie",
+    "role":"C",
+    "wealth":[674.5],
+    "rank":[0],
+    "planet":["planet1,Zoroxia"],
+    "income":[1100],
+    "declaredIncome":[1100],
+    "audit":[250],
+    "bankrupt":[false]
+  },
+  "planetData":{
+    "planetID":"planet1",
+    "planetName":"Zoroxia",
+    "taxRate":0.7,
+    "bankruptThisRound":false,
+    "players":[
+      {"connectionID":"Zru4medkliACEXA=",
+      "playerID":"00001",
+      "playerName":"Emma",
+      "role":"A"},
+      {"connectionID":"Zru5EcnpFiACHEQ=",
+      "playerID":"00002",
+      "playerName":"Jules",
+      "role":"B"},
+      {"connectionID":"Zru5Ve4rliACEeg=",
+      "playerID":"00003",
+      "playerName":"Stevie",
+      "role":"C"}
+      ]
+    }
+  }
+}```
