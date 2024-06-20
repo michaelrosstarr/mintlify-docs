@@ -5,9 +5,9 @@ icon: 'terminal'
 ---
 * Values determined by the Server Stack are referred to as `[from METHOD /endpoint]`
 * Values determined by the player are referred to as `[from client]`
-* [Send requests](https://www.npmjs.com/package/ws?ref=blog.krum.io) to: `wss://w1ws57hjh0.execute-api.eu-central-1.amazonaws.com/prod/` 
+* [Send requests](https://www.npmjs.com/package/ws?ref=blog.krum.io) to: `wss://w1ws57hjh0.execute-api.eu-central-1.amazonaws.com/prod/`
 
-<Note> If at any point you need to see what a given player's object looks like, you can always send this query: `{"action":"check","type":"redis","method":"player","pid":"00001","gid":"18062024-2210"}` where pid is playerID and gid is gameID. </Note>
+> If at any point you need to see what a given player's object looks like, you can always send this query: `{"action":"check","type":"redis","method":"player","pid":"00001","gid":"18062024-2210"}` where pid is playerID and gid is gameID.
 
 ## createGame
 createGame creates an object in the elasticache-tax-game cache, with the key `${gameID}`. It also creates the first empty planet in the planets array (in the elasticache-tax-game cache with the key `planets`).
@@ -15,8 +15,8 @@ createGame creates an object in the elasticache-tax-game cache, with the key `${
 ### Required data
 ```javascript
 {
-    action: string, //MUST BE "game" 
-    type: string, //MUST BE "createGame" 
+    action: string, //MUST BE "game"
+    type: string, //MUST BE "createGame"
     gameID: string, //[from RestAPI]
     stageTime: number, //in seconds (eg: 20 = 20s | so a round will be 1m 20s)
     auditChance: number, //decimal (eg: 20% = 0.20)
@@ -54,12 +54,12 @@ example: `{"action":"game","type":"createGame","gameID":"18062024-1845","stageTi
 
 `${planetID}-${gameID}`: {
     planetID: "planet1",
-    planet_name: `${AI generated}`,
-    taxRate: data.defaultRate,
+    planetName: `${AI generated}`,
+    taxRate: data.taxRate,
     players: [{
         connectionID: string, //player's connection id
         playerID: string,
-        player_name: string,
+        playerName: string,
         role: string // one of ["A" || "B" || "C"]
     }],
   };
@@ -71,19 +71,19 @@ example: `{"action":"game","type":"createGame","gameID":"18062024-1845","stageTi
 
 ```javascript
     statusCode: 200,
-    body: `{"type":"createGame","message":["OK","OK","OK"]}`
+    body: `["OK","OK","OK"]`
 ```
 
 ## joinGame
 joinGame creates an object in the elasticache-tax-game cache, with the key `${gameID}---${playerID}`. It will return a generated role and planet to each connection (once the planet is established), and update the host with the new player (playerID and name).
 
-<Warning>When WebSockets receives the request, it scans `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` table. If there is a record in the table with the same connectionId & gameID, it gets that object from Elasticache and returns the full item to the user.</Warning>
+> **When WebSockets receives the request, it scans `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` table. If there is a record in the table with the same connectionId & gameID, it gets that object from Elasticache and returns the full item to the user.**
 
 ### Required data
 ```javascript
-action: string, //MUST BE "game" 
-type: string, //MUST BE "joinGame" 
-gameID: string, 
+action: string, //MUST BE "game"
+type: string, //MUST BE "joinGame"
+gameID: string,
 playerID: string, //from RestAPI [ POST /joinGame]
 name: string //from client
 ```
@@ -103,7 +103,7 @@ example: `{"action":"game","type":"joinGame","gameID":"game-c3b4i7ybc","playerID
     planet: string, //`${planetID},${planetName}`,
     taxRate: Array<number>, // ONLY A | starts as [defaultRate]
     redistributedWealth: Array<number>, // ONLY A | amount they redistributed to B and C players in a round
-    playerCount: Array<number>, // ONLY A | number of players on the planet they are currently on 
+    playerCount: Array<number>, // ONLY A | number of players on the planet they are currently on
     bankrupt: Array<boolean>, // - true if they went bankrupt in a round
 }
 ```
@@ -145,12 +145,12 @@ ${gameID}---${playerID}: {
 #### Returns
 ```javascript
     statusCode: 200,
-    body: `{"type":"joinGame","message":{"options":{"stageTime":20,"auditChance":0.25,"finePercent":0.15,"planetCollectionMultiplier":1.7,"taxRate":0.3,"declaredIncomePercent":0.4,"incomeMax":1200,"incomeMin":600,"bankruptcyThreshold":0,"generateNewIncomeEachRound":false}}}`
+    body: `{"type":"joinGame","message":{"options":{"stageTime":20,"auditChance":0.1,"finePercent":0.5,"planetCollectionMultiplier":1.7,"taxRate":0.3,"declaredIncomePercent":0,"incomeMax":1200,"incomeMin":600,"bankruptcyThreshold":0,"generateNewIncomeEachRound":false}}}`
 ```
 
-<Note>Each time a player sends a joinGame request, the host will receive the following string: `{"playerID":"001a","playerName":"Emma", "type":"[new|rejoin]"}`</Note>
+> Each time a player sends a joinGame request, the host will receive the following string: `{"type":"startGame","message":[{"planetID":"planet1","planetName":"Terralus","players":[{"connectionID":"ZqGUhc8pliACFpw=","playerID":"00001","playerName":"Emma","role":"A"},{"connectionID":"ZqGWHc1-FiACETQ=","playerID":"00002","playerName":"Jules","role":"B"},{"connectionID":"ZqGXndKyFiACEXA=","playerID":"00003","playerName":"Stevie","role":"C"}]}]}`
 
-### Existing Connection
+### ~~Existing Connection~~ DEPRECIATED
 ```javascript
     statusCode: 200,
     body: "{\"connectionId\":\"Zg2C4e7uliACEsg= \",\"playerID\":\"00001 \",\"name\":\"Emma \",\"role\":\"A\",\"wealth\":[0],\"rank\":[0],\"planet\":\"planet1,Quintaris\",\"taxRate\":[],\"redistributedWealth\":[],\"playerCount\":[],\"bankrupt\":[]}"
@@ -170,11 +170,8 @@ gameID: string
 ```
 
 ### Each player receives:
-The planet_members array **includes** this player
-`{"type":"startGame","message":{"planetID":"planet1","planet_name":"Mystoria","playerRole":"A","planet_members":["Emma","Jules","Stevie","Jules","Thomas"]}}`
-
-### Host receives:
-`{"type":"startGame","message":"OK"}`
+The players array **includes** this player
+`{"type":"startGame","message":{{"planetID":"planet1","planetName":"Soralia","playerRole":"C","players":["Emma","Jules","Steve","Thomas","Kelvin","Dana"]}}`
 
 ## startRound
 It should be sent by the **Host**. Creates an array of items in `DynamoDBStack-WebsocketConnections87C62C57-1H8H09K1YWXHY` with the given gameID, and then sends each connection the response message.
@@ -191,47 +188,29 @@ round: number
 #### To Host
 ```javascript
     statusCode: 200,
-    body: `{"type":"startRound","message":{"round":1,"stage":1,"stageStartTime":"19/06/2024, 19:07:57","stageDuration":20}}`
+    body: `{"type":"startRound","message":{{"round":1,"stage":1,"stageStartTime":"2024-06-17T18:17:49.544Z","stageDuration":20}}`
 ```
 
 #### To Players
 ```javascript
     statusCode: 200,
-    body: `{"type":"startRound","message":{"round":1,"stage":1,"stageStartTime":"19/06/2024, 19:07:57","stageDuration":20}}`
+    body: `{"type":"startRound","message":{"round":1,"stage":1,"stageStartTime":"2024-06-17T17:48:58.380Z","stageDuration":20}}`
 ```
 
-
-## handleStage
-### Required Data
-```javascript
-action: "game",
-type: "handleStage",
-gameID: string,
-```
-
-### Returns to Host
-```javascript
-statusCode: 200,
-body: {"type":"handleStage","message":{"value":"OK"}}
-```
-
-### Returns to Client
-`{"type":"handleStage","message":{"value":"TIME UP"}}`
-
-## startStage & stageChanges
+## stageChanges, handleStage, & startStage
 * `stageChanges` is sent by a player that needed to make an action during that stage:
     - At the end of stage 1, all "A" players should send a `stageChanges` request
     - At the end of stage 2, all "B" and "C" players should send a `stageChanges` request
     - At the end of stage 3, **all** players should send a `stageChanges` request
     - At the end of stage 4, "C" players should send a `stageChanges` request
-* `handleStage` should be sent by the **Host** when the stage is up (stageDuration has elapsed)
+* `handleStage` should be sent by the **Host** when the stage is up (stageDuration has elapsed). All players will be alerted that they must send their `stageChanges` request
     - This way, only one system is managing the time, and the WebSockets aren't using up a massive amount of processing power while each connection waits for stageDuration to elapse before sending a response.
 
 <Warning>The WebSockets don't check if the stage duration is up. The response to `stageChanges` is sent in `handleStage`.</Warning>
 
 ### stageChanges
 
-Response: `200 OK`
+Response: `{"type":"stageChanges","message":"OK"}`
 
 #### Stage 1
 ```javascript
@@ -269,7 +248,10 @@ gameID: string,
 playerID: string
 round: number,
 stage: number, //MUST BE 3
-
+role: string, //VERY IMPORTANT!!!!!!!!!
+redistributed: number, //ONLY PLAYER A: the amount they chose to redistribute
+remainder: number //ONLY PLAYER A: redistributable-redistributed
+audit: number //ONLY B+C PLAYERS
 ```
 
 
@@ -286,11 +268,28 @@ stage: number, //MUST BE 4
 
 eg : `{"action":"game","type":"stageChanges","gameID":"18062024-2210","round":1,"stage":1,"playerID":"00001","planetID":"planet1","taxRate":0.7}`
 
+## handleStage
+### Required Data
+```javascript
+action: "game",
+type: "handleStage",
+gameID: string,
+```
+
+### Returns to Host
+```javascript
+statusCode: 200,
+body: `{"type":"handleStage","message":{"value":"OK"}}`
+```
+
+### Returns to Client
+`{"type":"handleStage","message":{"value":"TIME UP"}}`
+
 ### startStage
 #### Required Data
 ```javascript
 action: "game",
-type: "handleStage",
+type: "startStage",
 gameID: string,
 round: number,
 stage: number //this should be the current stage | if handleStage() is being sent after stage 1, it should be 1
@@ -299,37 +298,22 @@ stage: number //this should be the current stage | if handleStage() is being sen
 #### To Host
 ```javascript
     statusCode: 200,
-    body: `{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20}`
+    body: `{"type":"startStage","message":{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20}}`
 ```
 
 #### To Players - after stage 1
-```javascript
-    statusCode: 200,
-    body: `{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20,"taxRate":0.15}`
-```
+`{"type":"startStage","message":{"round":1,"stage":2,"stageStartTime":"19/06/2024, 12:11:11","stageDuration":20,"taxRate":0.15}}`
 
 #### To Players - after stage 2
-**A Players | Not Bankrupt**
-```javascript
-    statusCode: 200,
-    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20,"bankrupt":false,"declared":[800,1100,600,600],"redistributable":3689}`
-```
+`{"type":"startStage","message":{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20,"bankrupt":false,"declared":[800,1100,600,600],"redistributable":3689}}`
 
 **A Players | Bankrupt**
-```javascript
-    statusCode: 200,
-    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20,"bankrupt":true}`
-```
+`{"type":"startStage","message":{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20,"bankrupt":true}}`
 
 **Other Players**
-```javascript
-    statusCode: 200,
-    body: `{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20}`
-```
+`{"type":"startStage","message":{"round":1,"stage":3,"stageStartTime":"19/06/2024, 16:21:12","stageDuration":20}}`
 
 #### To Players - after stage 3
 
 
 #### To Players - after stage 4
-
-
