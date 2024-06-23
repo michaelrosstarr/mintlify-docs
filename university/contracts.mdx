@@ -572,3 +572,24 @@ Fetches the latest config that was craeted.
   }
 }
 ```
+
+# Update player
+
+Update a player in the redis
+
+**Request** `POST /update/player/:gameID`
+
+```js
+{
+  playerID: PlayerID,
+  data: PlayerData
+}
+```
+
+**Response**
+
+```js
+{
+  success: true
+}
+```
