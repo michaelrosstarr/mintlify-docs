@@ -1,0 +1,51 @@
+---
+title: 'Setup Guide'
+description: 'How to setup the game on our own AWS account'
+icon: 'wrench'
+---
+
+# Self Hosting Taxga.me
+1. Create an AWS account [here](https://aws.amazon.com/).
+2. Install NodeJS [here](https://nodejs.org/en/download/prebuilt-installer).
+2. Install AWS SAM [here](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html).
+3. Install AWS CDK [here](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html).
+4. Create access keys for your specified AWS user, preferably using an service account. You can view a guide [here](https://nodejs.org/en/download/prebuilt-installer).
+5. Put the code from the `submission.zip` into an AWS Codecommit repository. You can follow [this guide](https://dev.to/arbythecoder/getting-started-with-aws-codecommit-a-step-by-step-guide-8eb) on how to get it all setup. Using AWS Codecommit will stream the process, but you can upload each file manually, especially in the case of AWS Amplify.
+6. Setup and link the client folder to AWS Amplify, and make sure you have the following as environmental variables. You can follow [this guide](https://medium.com/@stk.devtest/a-beginners-guide-to-hosting-next-js-14-on-aws-amplify-db455631d56b) to setup NextJS on AWS Amplify.
+
+```env
+URL=website_url
+API_URL=api_url
+WS_URL=websocket_service_url
+SESSION_SECRET=make_up_a_session_secret
+NEXTAUTH_SECRET=your_secret_here
+GOOGLE_CLIENT_ID=your_google_client_id_here
+GOOGLE_CLIENT_SECRET=your_google_client_secret_here
+```
+
+7. Create a `.env.` in the folder `server` with the following:
+
+```env
+AWS_ACCESS_KEY=aws_access_key
+AWS_SECRET_ACCESS=aws_secret_access
+AWS_REGION=eu-central-1
+OPENAI=openai_api_key
+REDIS=aws_elasticache_instance_url
+```
+
+8. In the server folder, run the command `cdk deploy --all` to deploy all stacks to AWS.
+9. Setup your EC2 and ElastiCache instances. You can follow [this guide](https://bluexp.netapp.com/blog/aws-cvo-blg-aws-elasticache-for-redis-how-to-use-the-aws-redis-service) on how to do this.
+10. Once that has completed, you will need to visit AWS DynamoDB, get the table names and populate `DATABASE_TABLES` variable in `server/lambda/index.ts`, line 36.
+11. You will also need to populate the Lambda functions with the OPENAI and REDIS environmental variables. These can be added on the Lambda function, configuration, environmental variables. You can read [this guide](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) on how to do this.
+12. If you wish to add a custom domain, read [this guide](https://medium.com/geekculture/how-to-add-a-custom-domain-to-lambda-functions-1bc0ae639676) on how to add it and link to your AWS services. AWS Amplify has a step-by-step guide GUI on how to do this, to be sure to follow that.
+
+# Common Issues
+### Not communicating between networks
+There might be an issue where your AWS services are not talking to each other. You need to ensure that all your AWS Lambda functions (both for the RESTful and Web Socket service) are on the same VPC (Virtual Private Cloud) as your EC2 instance that holds the Redis instance. Connect your Lambda functions to the VPC, you can follow [this guide](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html), and it should resolve all your issues.
+
+# Future plans
+
+These are all things that we would have liked to have done but just did not have the time to do.
+
+* Deploy all services via AWS CDK and AWS SAM.
+* Setup and manage the EC2 and ElastiCache via CDK.

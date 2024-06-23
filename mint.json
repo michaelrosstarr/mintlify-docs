@@ -50,12 +50,10 @@
       "group": "Tax Game",
       "pages": [
         "university/getting-started",
-        "university/stack",
+        "university/setup",
         "university/configuration",
         "university/guide",
         "university/contracts",
-        "university/interfaces",
-        "university/database",
         "university/websockets",
         "university/websockets-requests",
         "university/tos"
