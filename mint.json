@@ -56,6 +56,7 @@
         "university/contracts",
         "university/websockets",
         "university/websockets-requests",
+        "university/game",
         "university/tos"
       ]
     }
