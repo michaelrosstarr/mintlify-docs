@@ -61,3 +61,12 @@ AWS DynamoDB automatically handles scaling, with dynamic reads and writes depend
 The EC2 instance that the Redis/ElastiCache is hosted on is also easily scalable. Resources can either be manually allocated or one could setup automatic resource allocation to the EC2 instance also using AWS CloudWatch to see the read and writes to the ElastiCache instance.
 
 The nature of AWS Amplify uses serverless technologies where all these resources scale automatically. The only thing that we would manage the amount of RAM is allocated to the serverless services.
+
+Thus, the whole AWS system is highly scalable and this was designed like this.
+
+# Security
+
+We are not storing any highly sensitive data of the players, and all of the data transmitted via HTTPS and SSL. We make use of Cloudflare as our primary network security provider. Cloudflare offers various security features that we are making use of.
+* **Request validation**: Requests are validated and sanitized before being sent to our AWS services to remove any false requests.
+* **Spam & DDoS protection**: Cloudflare has really good spam and DDoS protection which prevents overloading of our system on AWS.
+* **Bot protection**: Cloudfalre blocks all bots from accessing our services, this also prevents any overloading of our system on AWS.
