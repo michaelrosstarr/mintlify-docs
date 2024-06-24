@@ -45,7 +45,6 @@
       "pages": [
         "university/getting-started",
         "university/setup",
-        "university/configuration",
         "university/guide",
         "university/contracts",
         "university/websockets",
