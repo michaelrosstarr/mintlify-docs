@@ -41,3 +41,33 @@ Welcome to our IMY772 AWS Project. Please see the various pages and documents on
 * We are using OpenAI API as our AI integration.
 * We are doing dynamic QR code generation as our image processing.
 * Network security and request validation via Cloudflare.
+
+# Future plans
+
+These are all things that we would have liked to have done but just did not have the time to do.
+
+* Deploy all services via AWS CDK and AWS SAM.
+* Setup and manage the EC2 and ElastiCache via CDK.
+* Setup a NAT Gateway via an EC2 instance to save on native AWS NAT Gateway costs.
+* Migrate documentation to its own hosted document solution on the taxga.me domain.
+
+# Scalability
+
+Due to the nature of AWS, the services are easily scalable. Our main features are using AWS serverless features that are highly scalable by nature. AWS Lambda function automatically handles scaling the number of execution environments until you reach our accounts limits. It has a limitation of 1000 concurrent requests but this can be increased upon request from AWS.
+
+AWS DynamoDB automatically handles scaling, with dynamic reads and writes depending on the amount of requests. This is managed by AWS CloudWatch to montior all the reads and writes and adapts as needed.
+
+The EC2 instance that the Redis/ElastiCache is hosted on is also easily scalable. Resources can either be manually allocated or one could setup automatic resource allocation to the EC2 instance also using AWS CloudWatch to see the read and writes to the ElastiCache instance.
+
+The nature of AWS Amplify uses serverless technologies where all these resources scale automatically. The only thing that we would manage the amount of RAM is allocated to the serverless services.
+
+Thus, the whole AWS system is highly scalable and this was designed like this.
+
+# Security
+
+We are not storing any highly sensitive data of the players, and all of the data transmitted via HTTPS and SSL. We make use of Cloudflare as our primary network security provider. Cloudflare offers various security features that we are making use of.
+* **Request validation**: Requests are validated and sanitized before being sent to our AWS services to remove any false requests.
+* **Spam & DDoS protection**: Cloudflare has really good spam and DDoS protection which prevents overloading of our system on AWS.
+* **Bot protection**: Cloudfalre blocks all bots from accessing our services, this also prevents any overloading of our system on AWS.
+
+You can view a full list of Cloudflare security features [here](https://www.cloudflare.com/security/).
