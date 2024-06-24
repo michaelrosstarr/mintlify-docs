@@ -51,3 +51,11 @@ These are all things that we would have liked to have done but just did not have
 * Setup and manage the EC2 and ElastiCache via CDK.
 * Setup a NAT Gateway via an EC2 instance to save on native AWS NAT Gateway costs.
 * Migrate documentation to its own hosted document solution on the taxga.me domain.
+
+# Scalability
+
+Due to the nature of AWS, the services are easily scalable. Our main features are using AWS serverless features that are highly scalable by nature. AWS Lambda function automatically handles scaling the number of execution environments until you reach our accounts limits. It has a limitation of 1000 concurrent requests but this can be increased upon request from AWS.
+
+AWS DynamoDB automatically handles scaling, with dynamic reads and writes depending on the amount of requests. This is managed by AWS CloudWatch to montior all the reads and writes and adapts as needed.
+
+The EC2 instance that the Redis/ElastiCache is hosted on is also easily scalable. Resources can either be manually allocated or one could setup automatic resource allocation to the EC2 instance also using AWS CloudWatch to see the read and writes to the ElastiCache instance.
