@@ -59,3 +59,5 @@ Due to the nature of AWS, the services are easily scalable. Our main features ar
 AWS DynamoDB automatically handles scaling, with dynamic reads and writes depending on the amount of requests. This is managed by AWS CloudWatch to montior all the reads and writes and adapts as needed.
 
 The EC2 instance that the Redis/ElastiCache is hosted on is also easily scalable. Resources can either be manually allocated or one could setup automatic resource allocation to the EC2 instance also using AWS CloudWatch to see the read and writes to the ElastiCache instance.
+
+The nature of AWS Amplify uses serverless technologies where all these resources scale automatically. The only thing that we would manage the amount of RAM is allocated to the serverless services.
