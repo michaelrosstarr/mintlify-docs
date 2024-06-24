@@ -41,12 +41,6 @@
       ]
     },
     {
-      "group": "API Development",
-      "pages": [
-        "api-development/status-codes"
-      ]
-    },
-    {
       "group": "Tax Game",
       "pages": [
         "university/getting-started",
